@@ -2,9 +2,10 @@
   "name": "js-web-cat-shelter-express-handlebars",
   "version": "1.0.0",
   "description": "## Educational project - implementing newly learned knowledge every week during the JS Web course.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node_env=production&& node ./src/index.js",
+    "dev": "nodemon ./src/index.js"
   },
   "repository": {
     "type": "git",
