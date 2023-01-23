@@ -7,18 +7,20 @@ const port = 5001;
 
 const app = express();
 
-// app.engine('hbs', handlebars.engine({extname: 'hbs'}));
+app.engine('hbs', handlebars.engine({extname: 'hbs'}));
+app.use(express.static('src/public'));
+app.set('view engine', 'hbs');
+app.set('views', './src/views');
 
-// app.set('view engine', 'hbs');
-// app.set('vies', './src/views');
 
-app.use(express.static('.src/public'));
 
 app.use(express.urlencoded({extended: false}));
 
 app.get('/', (req, res) => {
-    res.send('Hello');
+    res.render('index');
 });
+
+
 //we will use next line when the config setup is fixed!
 //app.listen(config.PORT, () => {consle.log(`Server is running on port ${config.PORT}...`)});
 app.listen(port, () => {console.log(`Server is running on port ${port}...`)});
