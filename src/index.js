@@ -2,7 +2,7 @@ const express = require('express');
 const handlebars = require('express-handlebars');
 //setup needs to be fixed
 //const config = require('./config/config.js'); 
-
+const db = require('./db.json');
 const port = 5001;
 
 const app = express();
@@ -17,7 +17,8 @@ app.set('views', './src/views');
 app.use(express.urlencoded({extended: false}));
 
 app.get('/', (req, res) => {
-    res.render('index');
+    const cats = db.cats;
+    res.render('index', { cats });
 });
 
 
