@@ -21,6 +21,10 @@ app.get('/', (req, res) => {
     res.render('index', { cats });
 });
 
+app.get('/cats/add', (req, res) => {
+    res.render('addCat');
+});
+
 
 //we will use next line when the config setup is fixed!
 //app.listen(config.PORT, () => {consle.log(`Server is running on port ${config.PORT}...`)});
