@@ -129,6 +129,10 @@ async function writeBreeds(breed) {
     }
 }
 
+app.get('/edit', (req, res) => {
+    res.render('edit');
+});
+
 //we will use next line when the config setup is fixed!
 //app.listen(config.PORT, () => {consle.log(`Server is running on port ${config.PORT}...`)});
 app.listen(port, () => {console.log(`Server is running on port ${port}...`)});
