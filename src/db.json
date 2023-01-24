@@ -90,11 +90,20 @@
       "imgUrl": "/images/cats/cat2.jpeg",
       "description": "added await to res.redirect ",
       "id": 13
+    },
+    {
+      "name": "fdfd",
+      "breed": "",
+      "imgUrl": "/images/cats/cat3.jpeg",
+      "description": "fdfddf",
+      "id": 14
     }
   ],
   "breeds": [
-    "doberman",
-    "sexy",
-    "sweet"
+    "Persian",
+    "Maine Coon",
+    "Siamese",
+    "Exotic Shorthair",
+    "Sphynx"
   ]
 }

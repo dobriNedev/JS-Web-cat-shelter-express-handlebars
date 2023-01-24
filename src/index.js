@@ -27,7 +27,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/cats/add', (req, res) => {
-    res.render('addCat');
+    const breeds = db.breeds;
+    res.render('addCat', { breeds });
 });
 
 // app.post('/cats/add', (req, res) => {
