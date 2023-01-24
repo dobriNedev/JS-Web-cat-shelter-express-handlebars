@@ -75,6 +75,9 @@ app.post('/cats/add', async (req, res) => {
     });
 });
 
+app.get('/cats/add-breed', (req, res) => {
+    res.render('addBreed');
+});
 
 
 //we will use next line when the config setup is fixed!
