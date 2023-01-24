@@ -1,3 +1,4 @@
+const { json } = require('express');
 const express = require('express');
 const handlebars = require('express-handlebars');
 const formidable = require('formidable');
@@ -56,7 +57,7 @@ app.post('/cats/add', async (req, res) => {
         if(err) {
             return console.error(err);
         }
-        console.log(`FilesUpload: ${files.upload.originalFilename}`);
+        
         const { name, breed, description } = fields;
         //const imgUrl = path.relative(path.join(__dirname, '..'),path.join(__dirname,'public', 'images', 'cats', files.upload.originalFilename));
         let imgUrl = '/images/cats/' + files.upload.originalFilename;
@@ -64,21 +65,68 @@ app.post('/cats/add', async (req, res) => {
         
         fs.rename(files.upload.filepath, imgUrl, (err) => {
             if (err) {
-                console.log(err)
+                return console.log(err)
                 
             }
             console.log('File moved to:', imgUrl);
         });
         let cat = new Cat(name, breed, imgUrl, description);
         await cat.save();
-        res.redirect('/');
+        
     });
+    res.redirect('/');
 });
 
 app.get('/cats/add-breed', (req, res) => {
     res.render('addBreed');
 });
 
+app.post('/cats/add-breed', async (req, res) => {
+    let form = new formidable.IncomingForm();
+    form.parse(req, async (err, fields) => {
+        if (err) {
+            return console.log(`Error by parsing form: ${err}`);
+        }
+    
+    let newBreed = fields.breed;
+    console.log(`newBreed: ${newBreed}`);
+
+    let breedsArr = await readBreads();
+    console.log(`BreedsArr -> ${breedsArr}`);
+
+    //breedsArr.push(newBreed);
+    breedsArr = await writeBreeds(newBreed);
+
+    console.log(`BreedsArr after push()-> ${breedsArr}`);
+
+
+    }); 
+    res.redirect('/');
+});
+
+async function readBreads() {
+    try {
+        const data = await fs.promises.readFile(path.resolve(__dirname, './db.json'));
+        let db = JSON.parse(data);
+        return db.breeds;
+    } catch (error) {
+        console.log(`Erorr trying to readBread> ${error}`);
+    }
+}
+
+async function writeBreeds(breed) {
+    try {
+        const data = await fs.promises.readFile(path.resolve(__dirname, './db.json'));
+        let db = JSON.parse(data);
+        db.breeds.push(breed);
+        const jsonData = JSON.stringify(db, null, 2);
+        await fs.promises.writeFile(path.resolve(__dirname, './db.json'), jsonData);
+        console.log('Data written to file by writeBreeds() function');
+        return db.breeds;
+    } catch (error) {
+        console.log(`Erorr trying to writeBread> ${error}`);
+    }
+}
 
 //we will use next line when the config setup is fixed!
 //app.listen(config.PORT, () => {consle.log(`Server is running on port ${config.PORT}...`)});

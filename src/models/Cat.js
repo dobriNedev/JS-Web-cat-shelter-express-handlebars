@@ -39,7 +39,7 @@ class Cat {
     
             // Write the updated data back to the db.json file
             await fs.promises.writeFile(path.resolve(__dirname, '../db.json'), jsonData);
-            console.log('Data written to file');
+            console.log('Data written to file trough save() method of Cat class');
         } catch (err) {
             console.error(err);
         }

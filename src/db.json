@@ -76,7 +76,25 @@
       "imgUrl": "src/public/images/cats/cat3.jpeg",
       "description": "test",
       "id": 11
+    },
+    {
+      "name": "Legobex",
+      "breed": "Fluffy Cat",
+      "imgUrl": "/images/cats/cat3.jpeg",
+      "description": "test moved res.redirect ",
+      "id": 12
+    },
+    {
+      "name": "Twistex",
+      "breed": "Fluffy Cat",
+      "imgUrl": "/images/cats/cat2.jpeg",
+      "description": "added await to res.redirect ",
+      "id": 13
     }
   ],
-  "breeds": []
+  "breeds": [
+    "doberman",
+    "sexy",
+    "sweet"
+  ]
 }
