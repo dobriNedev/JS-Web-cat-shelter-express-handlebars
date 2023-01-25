@@ -19,7 +19,7 @@ app.set('views', './src/views');
 
 
 
-//app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: false}));
 
 app.get('/', (req, res) => {
     const cats = db.cats;
@@ -61,7 +61,7 @@ app.post('/cats/add', async (req, res) => {
         
         const { name, breed, description } = fields;
         //const imgUrl = path.relative(path.join(__dirname, '..'),path.join(__dirname,'public', 'images', 'cats', files.upload.originalFilename));
-        let imgUrl = '/images/cats/' + files.upload.originalFilename;
+        const imgUrl = '/images/cats/' + files.upload.originalFilename;
         console.log(`imgUrl: ${imgUrl}`);
         
         fs.rename(files.upload.filepath, imgUrl, (err) => {
@@ -129,9 +129,15 @@ async function writeBreeds(breed) {
     }
 }
 
-app.get('/edit', (req, res) => {
-    res.render('edit');
+app.get('/edit/:id', (req, res) => {
+    let catId = Number(req.params.id);
+    let breeds = db.breeds;
+    let cat = db.cats.find(el => el.id === catId);
+    console.log(`Cat -> ${cat.id}`);
+    res.render('edit', { cat, breeds });
 });
+
+
 
 //we will use next line when the config setup is fixed!
 //app.listen(config.PORT, () => {consle.log(`Server is running on port ${config.PORT}...`)});

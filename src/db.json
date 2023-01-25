@@ -97,6 +97,27 @@
       "imgUrl": "/images/cats/cat3.jpeg",
       "description": "fdfddf",
       "id": 14
+    },
+    {
+      "name": "test12",
+      "breed": "Maine Coon",
+      "imgUrl": "/images/cats/cat1.jpeg",
+      "description": "test",
+      "id": 15
+    },
+    {
+      "name": "Newton",
+      "breed": "Persian",
+      "imgUrl": "/images/cats/cute-cat.jpeg",
+      "description": "testing if the problem is in cat2.jpeg and cat3.jpeg, now the pic file is called cute-cat.jpeg",
+      "id": 16
+    },
+    {
+      "name": "test again",
+      "breed": "Persian",
+      "imgUrl": "/images/cats/cat3.jpeg",
+      "description": "testing if the only cat pic that was working will still work cat3.jpeg",
+      "id": 17
     }
   ],
   "breeds": [
