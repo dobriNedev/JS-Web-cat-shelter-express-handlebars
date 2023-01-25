@@ -124,8 +124,9 @@ app.post('/edit/:id', async (req, res) => {
         // await editCat(catId, name, breed, description);
         // res.redirect('/');
         const updatedDB = await editCat(catId, name, breed, description);
-        console.log(updatedDB)
-        res.render('home', { cats: updatedDB.cats });
+        
+        res.redirect('/');
+
 
     });
 });
