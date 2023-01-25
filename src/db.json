@@ -36,59 +36,17 @@
       "description": "Dominant and aggressive to other cats. Will probably eat you in your sleep. Very cute tho."
     },
     {
-      "name": "test",
-      "breed": "Fluffy Cat",
-      "imgUrl": "src/images/cats/cat1.jpeg",
-      "description": "test relative path",
-      "id": 6
-    },
-    {
-      "name": "test",
-      "breed": "Fluffy Cat",
-      "imgUrl": "images/cats/cat2.jpeg",
-      "description": "relative path one \".\"",
-      "id": 7
-    },
-    {
-      "name": "test",
-      "breed": "Fluffy Cat",
-      "imgUrl": "src/public/images/cats/cat3.jpeg",
-      "description": "test relativ path two \"..\" and 'public'",
-      "id": 8
-    },
-    {
-      "name": "test",
-      "breed": "Fluffy Cat",
-      "imgUrl": "/images/cats/cat2.jpeg",
-      "description": "test with simple imgUrl = '/images/cats/' + files.upload.originalFilename;",
-      "id": 9
-    },
-    {
-      "name": "test",
-      "breed": "Fluffy Cat",
-      "imgUrl": "src/public/images/cats/cat3.jpeg",
-      "description": "imgUrl = 'src/public/images/cats/' + files.upload.originalFilename;",
-      "id": 10
-    },
-    {
-      "name": "Dobri Nedev",
-      "breed": "Fluffy Cat",
-      "imgUrl": "src/public/images/cats/cat3.jpeg",
-      "description": "test",
-      "id": 11
-    },
-    {
-      "name": "Legobex",
-      "breed": "Fluffy Cat",
       "imgUrl": "/images/cats/cat3.jpeg",
-      "description": "test moved res.redirect ",
-      "id": 12
+      "id": 12,
+      "name": "EDITED",
+      "breed": "Maine Coon",
+      "description": "EDITED"
     },
     {
-      "name": "Twistex",
-      "breed": "Fluffy Cat",
+      "name": "EDITED",
+      "breed": "Persian",
       "imgUrl": "/images/cats/cat2.jpeg",
-      "description": "added await to res.redirect ",
+      "description": "added await to res.redirect \r\nEdited after added return db in the try.catch block of editCat function\r\nand res.render('home', {cats: db.cats}) instead of res.redirect('/').",
       "id": 13
     },
     {
@@ -100,7 +58,7 @@
     },
     {
       "name": "test12",
-      "breed": "Maine Coon",
+      "breed": "Persian",
       "imgUrl": "/images/cats/cat1.jpeg",
       "description": "test",
       "id": 15
@@ -109,7 +67,7 @@
       "name": "Newton",
       "breed": "Persian",
       "imgUrl": "/images/cats/cute-cat.jpeg",
-      "description": "testing if the problem is in cat2.jpeg and cat3.jpeg, now the pic file is called cute-cat.jpeg",
+      "description": "testing if the problem is in cat2.jpeg and cat3.jpeg, now the pic file is called cute-cat.jpeg\r\nTESTING EDIT",
       "id": 16
     },
     {

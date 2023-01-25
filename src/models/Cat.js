@@ -41,10 +41,9 @@ class Cat {
             await fs.promises.writeFile(path.resolve(__dirname, '../db.json'), jsonData);
             console.log('Data written to file trough save() method of Cat class');
         } catch (err) {
-            console.error(err);
+            console.error(`Error at cat.save(): ${err}`);
         }
     }
-    
     
 }
 
