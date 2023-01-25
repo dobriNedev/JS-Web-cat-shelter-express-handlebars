@@ -99,9 +99,9 @@ async function writeBreeds(breed) {
 }
 
 app.get('/edit/:id', (req, res) => {
-    let catId = Number(req.params.id);
-    let breeds = db.breeds;
-    let cat = db.cats.find(el => el.id === catId);
+    const catId = Number(req.params.id);
+    const breeds = db.breeds;
+    const cat = db.cats.find(el => el.id === catId);
     res.render('edit', { cat, breeds });
 });
 
@@ -126,8 +126,6 @@ app.post('/edit/:id', async (req, res) => {
         const updatedDB = await editCat(catId, name, breed, description);
         
         res.redirect('/');
-
-
     });
 });
 
@@ -150,8 +148,14 @@ async function editCat(id, name, breed, description) {
     } catch (error) {
         console.error(`Error at editCat(): ${error}`);
     }
-    
 }
+
+app.get('/shelter-cat/:id', (req, res) => {
+    const catId = Number(req.params.id);
+    const breeds = db.breeds;
+    const cat = db.cats.find(el => el.id === catId);
+    res.render('shelterCat', { cat, breeds });
+});
 
 //we will use next line when the config setup is fixed!
 //app.listen(config.PORT, () => {consle.log(`Server is running on port ${config.PORT}...`)});
