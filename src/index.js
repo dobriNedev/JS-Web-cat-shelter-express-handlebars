@@ -36,21 +36,29 @@ app.get('/cats/add', (req, res) => {
 
 app.post('/cats/add', async (req, res) => {
     let form = new formidable.IncomingForm();
+    let imgUrl = '';
     form.parse(req, async (err, fields, files) => {
         if (err) {
             return console.error(err);
         }
         const { name, breed, description } = fields;
 
-        const imgUrl = '/images/cats/' + files.upload.originalFilename;
-
+        //const imgUrl = ('/images/cats/') + files.upload.originalFilename;
+       
+        imgUrl = path.join(__dirname,'/public/images/cats/', files.upload.originalFilename);
+        
+        console.log(`files.upload.filepath : ${files.upload.filepath}`);
+        
+        console.log(`imgUrl : ${imgUrl}`);
         fs.rename(files.upload.filepath, imgUrl, (err) => {
             if (err) {
                 return console.log(`Error by parsing form when adding cat: ${err}`)
 
             }
             console.log('File moved to:', imgUrl);
+            imgUrl = '/images/cats/' + files.upload.originalFilename;
         });
+        imgUrl = '/images/cats/' + files.upload.originalFilename;
         let cat = new Cat(name, breed, imgUrl, description);
         await cat.save();
         res.redirect('/');

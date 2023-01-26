@@ -22,30 +22,30 @@
       "description": "Dominant and aggressive to other cats. Will probably eat you in your sleep. Very cute tho."
     },
     {
-      "name": "cat2.jpeg",
+      "name": "cat1",
       "breed": "Persian",
-      "imgUrl": "/images/cats/cute-cat.jpeg",
+      "imgUrl": "/images/cats/cat1.jpeg",
       "description": "test",
       "id": 4
     },
     {
-      "name": "cute-cat.jpeg",
-      "breed": "Siamese",
-      "imgUrl": "/images/cats/cute-cat.jpeg",
+      "name": "cat2",
+      "breed": "Exotic Shorthair",
+      "imgUrl": "/images/cats/cat2.jpeg",
       "description": "test",
       "id": 5
     },
     {
-      "name": "cat1.jpeg",
+      "name": "cat3",
       "breed": "Persian",
-      "imgUrl": "/images/cats/cat1.jpeg",
+      "imgUrl": "/images/cats/cat3.jpeg",
       "description": "test",
       "id": 6
     },
     {
-      "name": "cat3.jpeg",
+      "name": "one more cat 2",
       "breed": "Exotic Shorthair",
-      "imgUrl": "/images/cats/cat3.jpeg",
+      "imgUrl": "/images/cats/cat2.jpeg",
       "description": "test",
       "id": 7
     }

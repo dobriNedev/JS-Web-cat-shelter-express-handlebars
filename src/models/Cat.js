@@ -10,16 +10,6 @@ class Cat {
         this.description = description
     }
 
-    // save() {
-    //     this.id = db.cats[db.cats.length -1].id + 1;
-    //     db.cats.push(this);
-    //     const jsonData = JSON.stringify(db, null, 2);
-    //     try {
-    //         fs.promises.writeFile(path.resolve(__dirname, '../db.json'), jsonData);
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
     async save() {
         try {
             // Read the contents of the db.json file
