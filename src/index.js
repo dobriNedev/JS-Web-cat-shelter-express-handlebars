@@ -18,9 +18,15 @@ app.set('views', './src/views');
 
 app.use(express.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => {
-    const cats = db.cats;
-    res.render('index', { cats });
+app.get('/', async (req, res) => {
+    try {
+        const data = await fs.promises.readFile(path.resolve(__dirname, './db.json'));
+        const db = JSON.parse(data);
+        res.render('index', { cats: db.cats});
+    } catch (error) {
+        console.error(`Error at GET / : ${error}`);
+    }
+    
 });
 
 app.get('/cats/add', (req, res) => {
@@ -34,9 +40,8 @@ app.post('/cats/add', async (req, res) => {
         if (err) {
             return console.error(err);
         }
-
         const { name, breed, description } = fields;
-        //const imgUrl = path.relative(path.join(__dirname, '..'),path.join(__dirname,'public', 'images', 'cats', files.upload.originalFilename));
+
         const imgUrl = '/images/cats/' + files.upload.originalFilename;
 
         fs.rename(files.upload.filepath, imgUrl, (err) => {
@@ -62,12 +67,9 @@ app.post('/cats/add-breed', async (req, res) => {
         if (err) {
             return console.log(`Error by parsing form when adding breed: ${err}`);
         }
-
         let newBreed = fields.breed;
-        console.log(`newBreed: ${newBreed}`);
 
         let breedsArr = await readBreads();
-
 
         breedsArr = await writeBreeds(newBreed);
         res.redirect('/');
@@ -94,7 +96,7 @@ async function writeBreeds(breed) {
         console.log('Data written to file by writeBreeds() function');
         return db.breeds;
     } catch (error) {
-        console.log(`Erorr trying to writeBread> ${error}`);
+        console.error(`Erorr trying to writeBread> ${error}`);
     }
 }
 
@@ -113,7 +115,6 @@ app.post('/edit/:id', async (req, res) => {
             return console.log(`Error by parsing form when editing cat: ${err}`);
         }
 
-        const breeds = db.breeds;
         let cat = db.cats.find(el => el.id === catId);
         if (!cat) {
             res.status(404).send('There is no cat with the given ID found!');
@@ -121,16 +122,14 @@ app.post('/edit/:id', async (req, res) => {
 
         const { name, breed, description } = fields;
 
-        // await editCat(catId, name, breed, description);
-        // res.redirect('/');
-        const updatedDB = await editCat(catId, name, breed, description);
+        //const updatedDB = 
+        await editCat(catId, name, breed, description);
         
         res.redirect('/');
     });
 });
 
 async function editCat(id, name, breed, description) {
-    
     try {
         const data = await fs.promises.readFile(path.resolve(__dirname, './db.json'));
         let db = JSON.parse(data);
@@ -155,6 +154,27 @@ app.get('/shelter-cat/:id', (req, res) => {
     const cat = db.cats.find(el => el.id === catId);
     res.render('shelterCat', { cat });
 });
+
+app.post('/shelter-cat/:id', async(req, res) => {
+    const catId = Number(req.params.id);
+    try {
+        const data = await fs.promises.readFile(path.resolve(__dirname, './db.json'));
+        const db = JSON.parse(data);
+        //db.cats.filter(el => el.id !== id);
+        let cat = db.cats.find(el => el.id === catId);
+        let index = db.cats.indexOf(cat);
+        db.cats.splice(index, 1);
+        const jsonData = JSON.stringify(db, null, 2);
+        await fs.promises.writeFile(path.resolve(__dirname, './db.json'), jsonData);
+        console.log(`Data written to file when deleting resource`);
+        //res.set('Cache-Control', 'no-cache');
+        res.redirect('/');
+    } catch (error) {
+        console.error(`Error at deleteCat(): ${error}`);
+    }
+});
+
+
 
 //we will use next line when the config setup is fixed!
 //app.listen(config.PORT, () => {consle.log(`Server is running on port ${config.PORT}...`)});

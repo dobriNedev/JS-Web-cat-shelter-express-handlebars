@@ -22,60 +22,32 @@
       "description": "Dominant and aggressive to other cats. Will probably eat you in your sleep. Very cute tho."
     },
     {
-      "id": 4,
-      "name": "Spooky",
-      "imgUrl": "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_1280.jpg",
-      "breed": "Bombay Cat",
-      "description": "Dominant and aggressive to other cats. Will probably eat you in your sleep. Very cute tho."
-    },
-    {
-      "id": 5,
-      "name": "Sticky",
-      "imgUrl": "https://cdn.pixabay.com/photo/2014/04/13/20/49/cat-323262_1280.jpg",
-      "breed": "Bombay Cat",
-      "description": "Dominant and aggressive to other cats. Will probably eat you in your sleep. Very cute tho."
-    },
-    {
-      "imgUrl": "/images/cats/cat3.jpeg",
-      "id": 12,
-      "name": "EDITED",
-      "breed": "Maine Coon",
-      "description": "EDITED"
-    },
-    {
-      "name": "EDITED",
+      "name": "cat2.jpeg",
       "breed": "Persian",
-      "imgUrl": "/images/cats/cat2.jpeg",
-      "description": "added await to res.redirect \r\nEdited after added return db in the try.catch block of editCat function\r\nand res.render('home', {cats: db.cats}) instead of res.redirect('/').",
-      "id": 13
+      "imgUrl": "/images/cats/cute-cat.jpeg",
+      "description": "test",
+      "id": 4
     },
     {
-      "name": "fdfd",
-      "breed": "Exotic Shorthair",
-      "imgUrl": "/images/cats/cat3.jpeg",
-      "description": "fdfddf",
-      "id": 14
+      "name": "cute-cat.jpeg",
+      "breed": "Siamese",
+      "imgUrl": "/images/cats/cute-cat.jpeg",
+      "description": "test",
+      "id": 5
     },
     {
-      "name": "test12",
+      "name": "cat1.jpeg",
       "breed": "Persian",
       "imgUrl": "/images/cats/cat1.jpeg",
       "description": "test",
-      "id": 15
+      "id": 6
     },
     {
-      "name": "Newton",
-      "breed": "Persian",
-      "imgUrl": "/images/cats/cute-cat.jpeg",
-      "description": "testing if the problem is in cat2.jpeg and cat3.jpeg, now the pic file is called cute-cat.jpeg\r\nTESTING EDIT",
-      "id": 16
-    },
-    {
-      "name": "test again",
-      "breed": "Persian",
+      "name": "cat3.jpeg",
+      "breed": "Exotic Shorthair",
       "imgUrl": "/images/cats/cat3.jpeg",
-      "description": "testing if the only cat pic that was working will still work cat3.jpeg",
-      "id": 17
+      "description": "test",
+      "id": 7
     }
   ],
   "breeds": [
