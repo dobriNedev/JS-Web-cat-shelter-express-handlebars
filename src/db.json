@@ -48,6 +48,20 @@
       "imgUrl": "/images/cats/cat2.jpeg",
       "description": "test",
       "id": 7
+    },
+    {
+      "name": "cute-cat",
+      "breed": "Sphynx",
+      "imgUrl": "/images/cats/cute-cat.jpeg",
+      "description": "test",
+      "id": 8
+    },
+    {
+      "name": "domestic-cat",
+      "breed": "Siamese",
+      "imgUrl": "/images/cats/domestic-cat.jpeg",
+      "description": "test",
+      "id": 9
     }
   ],
   "breeds": [
