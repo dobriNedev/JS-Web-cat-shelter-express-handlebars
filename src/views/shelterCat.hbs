@@ -9,9 +9,7 @@
             disabled>{{cat.description}}</textarea>
         <label for="group">Breed</label>
         <select id="group" name="breed" disabled>
-            {{#each breeds}}
-            {{>breed breed=this}}
-            {{/each}}
+            <option value="{{cat.breed}}">{{cat.breed}}</option>
         </select>
         <button>SHELTER THE CAT</button>
     </form>

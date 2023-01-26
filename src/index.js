@@ -152,9 +152,8 @@ async function editCat(id, name, breed, description) {
 
 app.get('/shelter-cat/:id', (req, res) => {
     const catId = Number(req.params.id);
-    const breeds = db.breeds;
     const cat = db.cats.find(el => el.id === catId);
-    res.render('shelterCat', { cat, breeds });
+    res.render('shelterCat', { cat });
 });
 
 //we will use next line when the config setup is fixed!
