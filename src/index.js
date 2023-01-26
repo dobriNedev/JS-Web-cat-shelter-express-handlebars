@@ -26,7 +26,6 @@ app.get('/', async (req, res) => {
     } catch (error) {
         console.error(`Error at GET / : ${error}`);
     }
-    
 });
 
 app.get('/cats/add', (req, res) => {
@@ -42,20 +41,14 @@ app.post('/cats/add', async (req, res) => {
             return console.error(err);
         }
         const { name, breed, description } = fields;
-
-        //const imgUrl = ('/images/cats/') + files.upload.originalFilename;
        
         imgUrl = path.join(__dirname,'/public/images/cats/', files.upload.originalFilename);
-        
-        console.log(`files.upload.filepath : ${files.upload.filepath}`);
-        
-        console.log(`imgUrl : ${imgUrl}`);
+    
         fs.rename(files.upload.filepath, imgUrl, (err) => {
             if (err) {
                 return console.log(`Error by parsing form when adding cat: ${err}`)
 
             }
-            console.log('File moved to:', imgUrl);
             imgUrl = '/images/cats/' + files.upload.originalFilename;
         });
         imgUrl = '/images/cats/' + files.upload.originalFilename;
@@ -129,7 +122,6 @@ app.post('/edit/:id', async (req, res) => {
         }
 
         const { name, breed, description } = fields;
-
         //const updatedDB = 
         await editCat(catId, name, breed, description);
         
@@ -168,21 +160,18 @@ app.post('/shelter-cat/:id', async(req, res) => {
     try {
         const data = await fs.promises.readFile(path.resolve(__dirname, './db.json'));
         const db = JSON.parse(data);
-        //db.cats.filter(el => el.id !== id);
+        //db.cats.filter(el => el.id !== catId); needs to be assigned to variable/constant
         let cat = db.cats.find(el => el.id === catId);
         let index = db.cats.indexOf(cat);
         db.cats.splice(index, 1);
         const jsonData = JSON.stringify(db, null, 2);
         await fs.promises.writeFile(path.resolve(__dirname, './db.json'), jsonData);
         console.log(`Data written to file when deleting resource`);
-        //res.set('Cache-Control', 'no-cache');
         res.redirect('/');
     } catch (error) {
         console.error(`Error at deleteCat(): ${error}`);
     }
 });
-
-
 
 //we will use next line when the config setup is fixed!
 //app.listen(config.PORT, () => {consle.log(`Server is running on port ${config.PORT}...`)});
