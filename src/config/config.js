@@ -3,7 +3,8 @@ const config = {
         PORT: 1338
     },
     development: {
-        PORT: 5001
+        PORT: 5001,
+        DB_URI: 'mongodb://localhost:27017/'
     }
 }
 
