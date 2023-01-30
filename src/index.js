@@ -3,11 +3,12 @@ const handlebars = require('express-handlebars');
 const formidable = require('formidable');
 const fs = require('fs');
 const path = require('path');
-//setup needs to be fixed
-//const config = require('./config/config.js'); 
+const config = require('./config/config.js'); 
+const initDB = require('./config/initDB');
+
 const db = require('./db.json');
 const Cat = require('./models/Cat');
-const port = 5001;
+//const port = 5001;
 
 const app = express();
 
@@ -175,4 +176,8 @@ app.post('/shelter-cat/:id', async(req, res) => {
 
 //we will use next line when the config setup is fixed!
 //app.listen(config.PORT, () => {consle.log(`Server is running on port ${config.PORT}...`)});
-app.listen(port, () => { console.log(`Server is running on port ${port}...`) });
+//app.listen(port, () => { console.log(`Server is running on port ${port}...`) });
+
+initDB()
+    .then(() => app.listen(config.PORT, () => {console.log(`Server is running on PORT: ${config.PORT}...`)}))
+    .catch((err) => console.log(err));
