@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Breed = require('./Breed');
 
 const catSchema = new mongoose.Schema({
     name: {
@@ -6,12 +7,14 @@ const catSchema = new mongoose.Schema({
         required: true
     },
     imageUrl: {
-        type:String,
+        type: String,
         required: true,
-        match: [/^https?:\/\//g, 'Invalid URL!']
+        //TO DO check if validation required
+        //match: [/^https?:\/\//g, 'Invalid URL!']
     },
     breed: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Breed',
         required: true
     },
     description: {
