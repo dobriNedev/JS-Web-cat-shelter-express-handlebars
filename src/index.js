@@ -23,11 +23,11 @@ app.use(express.urlencoded({ extended: false }));
 
 app.get('/', async (req, res) => {
     try {
-        const data = await fs.promises.readFile(path.resolve(__dirname, './db.json'));
-        const db = JSON.parse(data);
-        res.render('index', { cats: db.cats});
+        const cats = await MongoCat.find().populate('breed').lean();
+        
+        res.render('index', { cats });
     } catch (error) {
-        console.error(`Error at GET / : ${error}`);
+        throw new Error(error);
     }
 });
 //OK
@@ -49,10 +49,12 @@ app.post('/cats/addCat',upload.single('upload'), async (req, res) => {
         return res.status(400).send({error:'invalid Breed!'});
     }
     const breedId = breed._id;
-    
+   
+    const imgUrl = '/images/cats/' + req.file.originalname;
+    console.log(imgUrl);
     const cat = new MongoCat({
         name: req.body.name,
-        imageUrl: req.file.path,
+        imageUrl: imgUrl,
         breed: breedId,
         description: req.body.description
       });
