@@ -1,7 +1,7 @@
 <main>
     <form action="/cats/{{cat._id}}/shelterCat" method="POST" class="cat-form">
         <h2>Shelter the cat</h2>
-        <img src="{{cat.imgUrl}}" alt="{{cat.name}}">
+        <img src="{{cat.imageUrl}}" alt="{{cat.name}}">
         <label for="name">Name</label>
         <input type="text" id="name" name="name" value="{{cat.name}}" disabled>
         <label for="description">Description</label>
@@ -9,7 +9,7 @@
             disabled>{{cat.description}}</textarea>
         <label for="group">Breed</label>
         <select id="group" name="breed" disabled>
-            <option value="{{cat.breed}}">{{cat.breed}}</option>
+            <option value="{{cat.breed.breed}}">{{cat.breed.breed}}</option>
         </select>
         <button>SHELTER THE CAT</button>
     </form>
