@@ -135,11 +135,15 @@ async function editCat(id, name, breed, description) {
         console.error(`Error at editCat(): ${error}`);
     }
 }
-
-app.get('/cats/:id/shelterCat', (req, res) => {
-    const catId = Number(req.params.id);
-    const cat = db.cats.find(el => el.id === catId);
-    res.render('shelterCat', { cat });
+//OK
+app.get('/cats/:id/shelterCat', async(req, res) => {
+    try {
+        const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
+        res.render('shelterCat', { cat });
+    } catch (error) {
+        throw new Error(error)
+    }
+    
 });
 
 app.post('/cats/:id/shelterCat', async (req, res) => {
