@@ -7,6 +7,7 @@ const config = require('./config/config.js');
 const initDB = require('./config/initDB');
 
 const db = require('./db.json');
+const Breed = require('./models/Breed.js');
 const Cat = require('./models/Cat');
 //const port = 5001;
 
@@ -64,43 +65,11 @@ app.get('/cats/add-breed', (req, res) => {
 });
 
 app.post('/cats/add-breed', async (req, res) => {
-    let form = new formidable.IncomingForm();
-    form.parse(req, async (err, fields) => {
-        if (err) {
-            return console.log(`Error by parsing form when adding breed: ${err}`);
-        }
-        let newBreed = fields.breed;
-
-        let breedsArr = await readBreads();
-
-        breedsArr = await writeBreeds(newBreed);
-        res.redirect('/');
-    });
+    
+    const breed = req.body;
+    console.log(`Breed: ${breed}`)
+    //const breeds = await Breed.find().lean();
 });
-
-async function readBreads() {
-    try {
-        const data = await fs.promises.readFile(path.resolve(__dirname, './db.json'));
-        let db = JSON.parse(data);
-        return db.breeds;
-    } catch (error) {
-        console.log(`Erorr trying to readBread> ${error}`);
-    }
-}
-
-async function writeBreeds(breed) {
-    try {
-        const data = await fs.promises.readFile(path.resolve(__dirname, './db.json'));
-        let db = JSON.parse(data);
-        db.breeds.push(breed);
-        const jsonData = JSON.stringify(db, null, 2);
-        await fs.promises.writeFile(path.resolve(__dirname, './db.json'), jsonData);
-        console.log('Data written to file by writeBreeds() function');
-        return db.breeds;
-    } catch (error) {
-        console.error(`Erorr trying to writeBread> ${error}`);
-    }
-}
 
 app.get('/edit/:id', (req, res) => {
     const catId = Number(req.params.id);
@@ -123,7 +92,7 @@ app.post('/edit/:id', async (req, res) => {
         }
 
         const { name, breed, description } = fields;
-        //const updatedDB = 
+       
         await editCat(catId, name, breed, description);
         
         res.redirect('/');
@@ -173,10 +142,6 @@ app.post('/shelter-cat/:id', async(req, res) => {
         console.error(`Error at deleteCat(): ${error}`);
     }
 });
-
-//we will use next line when the config setup is fixed!
-//app.listen(config.PORT, () => {consle.log(`Server is running on port ${config.PORT}...`)});
-//app.listen(port, () => { console.log(`Server is running on port ${port}...`) });
 
 initDB()
     .then(() => app.listen(config.PORT, () => {console.log(`Server is running on PORT: ${config.PORT}...`)}))
