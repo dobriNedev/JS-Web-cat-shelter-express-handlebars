@@ -62,6 +62,13 @@
       "imgUrl": "/images/cats/domestic-cat.jpeg",
       "description": "test",
       "id": 9
+    },
+    {
+      "name": "test",
+      "breed": "Unknown",
+      "imgUrl": "/images/cats/cat1.jpeg",
+      "description": "test",
+      "id": 10
     }
   ],
   "breeds": [

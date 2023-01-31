@@ -9,6 +9,8 @@ const initDB = require('./config/initDB');
 const db = require('./db.json');
 const Breed = require('./models/Breed.js');
 const Cat = require('./models/Cat');
+const upload = require('./upload');
+const MongoCat = require('./models/MongoCat');
 
 const app = express();
 
@@ -30,34 +32,37 @@ app.get('/', async (req, res) => {
 });
 //OK
 app.get('/cats/addCat', async (req, res) => {
-    const breeds = await Breed.find().lean();
-    
-    res.render('addCat', { breeds });
+    try {
+        const breeds = await Breed.find().lean();
+        res.render('addCat', { breeds });
+    } catch (error) {
+        throw new Error(error);
+    }
 });
-
-app.post('/cats/addCat', async (req, res) => {
-    let form = new formidable.IncomingForm();
-    let imgUrl = '';
-    form.parse(req, async (err, fields, files) => {
-        if (err) {
-            return console.error(err);
-        }
-        const { name, breed, description } = fields;
-       
-        imgUrl = path.join(__dirname,'/public/images/cats/', files.upload.originalFilename);
+//OK
+app.post('/cats/addCat',upload.single('upload'), async (req, res) => {
+    const breedName = req.body.breed;
     
-        fs.rename(files.upload.filepath, imgUrl, (err) => {
-            if (err) {
-                return console.log(`Error by parsing form when adding cat: ${err}`)
+    const breed = await Breed.findOne({breed: breedName});
+    
+    if (!breed) {
+        return res.status(400).send({error:'invalid Breed!'});
+    }
+    const breedId = breed._id;
+    
+    const cat = new MongoCat({
+        name: req.body.name,
+        imageUrl: req.file.path,
+        breed: breedId,
+        description: req.body.description
+      });
 
-            }
-            imgUrl = '/images/cats/' + files.upload.originalFilename;
-        });
-        imgUrl = '/images/cats/' + files.upload.originalFilename;
-        let cat = new Cat(name, breed, imgUrl, description);
+    try {
         await cat.save();
         res.redirect('/');
-    });
+    } catch (error) {
+        throw new Error(error);
+    }  
 });
 //OK
 app.get('/cats/addBreed', (req, res) => {
@@ -65,7 +70,7 @@ app.get('/cats/addBreed', (req, res) => {
 });
 //OK
 app.post('/cats/addBreed', async (req, res) => {
-    const { breed } = req.body;
+    const { breed } = req.query;
     
     try {
         await Breed.create({ breed });
