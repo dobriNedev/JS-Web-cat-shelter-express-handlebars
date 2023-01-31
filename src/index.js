@@ -9,7 +9,6 @@ const initDB = require('./config/initDB');
 const db = require('./db.json');
 const Breed = require('./models/Breed.js');
 const Cat = require('./models/Cat');
-//const port = 5001;
 
 const app = express();
 
@@ -30,12 +29,12 @@ app.get('/', async (req, res) => {
     }
 });
 
-app.get('/cats/add', (req, res) => {
+app.get('/cats/addCat', (req, res) => {
     const breeds = db.breeds;
     res.render('addCat', { breeds });
 });
 
-app.post('/cats/add', async (req, res) => {
+app.post('/cats/addCat', async (req, res) => {
     let form = new formidable.IncomingForm();
     let imgUrl = '';
     form.parse(req, async (err, fields, files) => {
@@ -59,26 +58,31 @@ app.post('/cats/add', async (req, res) => {
         res.redirect('/');
     });
 });
-
-app.get('/cats/add-breed', (req, res) => {
+//OK
+app.get('/cats/addBreed', (req, res) => {
     res.render('addBreed');
 });
-
-app.post('/cats/add-breed', async (req, res) => {
+//OK
+app.post('/cats/addBreed', async (req, res) => {
+    const { breed } = req.body;
     
-    const breed = req.body;
-    console.log(`Breed: ${breed}`)
-    //const breeds = await Breed.find().lean();
+    try {
+        await Breed.create({ breed });
+    } catch (error) {
+        console.log(error);
+    }
+
+    res.redirect('/');
 });
 
-app.get('/edit/:id', (req, res) => {
+app.get('/cats/:id/edit', (req, res) => {
     const catId = Number(req.params.id);
     const breeds = db.breeds;
     const cat = db.cats.find(el => el.id === catId);
     res.render('edit', { cat, breeds });
 });
 
-app.post('/edit/:id', async (req, res) => {
+app.post('/cats/:id/edit', async (req, res) => {
     const catId = Number(req.params.id);
     let form = new formidable.IncomingForm();
     form.parse(req, async (err, fields, files) => {
@@ -119,13 +123,13 @@ async function editCat(id, name, breed, description) {
     }
 }
 
-app.get('/shelter-cat/:id', (req, res) => {
+app.get('/cats/:id/shelterCat', (req, res) => {
     const catId = Number(req.params.id);
     const cat = db.cats.find(el => el.id === catId);
     res.render('shelterCat', { cat });
 });
 
-app.post('/shelter-cat/:id', async(req, res) => {
+app.post('/cats/:id/shelterCat', async(req, res) => {
     const catId = Number(req.params.id);
     try {
         const data = await fs.promises.readFile(path.resolve(__dirname, './db.json'));
