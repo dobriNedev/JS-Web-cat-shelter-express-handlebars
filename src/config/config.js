@@ -4,7 +4,8 @@ const config = {
     },
     development: {
         PORT: 5001,
-        DB_URI: 'mongodb://localhost:27017/'
+        DB_URI: 'mongodb://localhost:27017/catShelter' 
+        //mongodb://localhost:27017/catShelter->desired collection name in MongoDB
     }
 }
 
