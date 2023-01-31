@@ -29,8 +29,10 @@ app.get('/', async (req, res) => {
     }
 });
 
-app.get('/cats/addCat', (req, res) => {
-    const breeds = db.breeds;
+app.get('/cats/addCat', async (req, res) => {
+    const breeds = await Breed.find().lean();
+    console.log(breeds)
+    
     res.render('addCat', { breeds });
 });
 
