@@ -20,7 +20,7 @@ app.set('view engine', 'hbs');
 app.set('views', './src/views');
 
 app.use(express.urlencoded({ extended: false }));
-
+//OK
 app.get('/', async (req, res) => {
     try {
         const cats = await MongoCat.find().populate('breed').lean();
@@ -51,7 +51,7 @@ app.post('/cats/addCat',upload.single('upload'), async (req, res) => {
     const breedId = breed._id;
    
     const imgUrl = '/images/cats/' + req.file.originalname;
-    console.log(imgUrl);
+    
     const cat = new MongoCat({
         name: req.body.name,
         imageUrl: imgUrl,
@@ -82,12 +82,13 @@ app.post('/cats/addBreed', async (req, res) => {
 
     res.redirect('/');
 });
-
-app.get('/cats/:id/edit', (req, res) => {
-    const catId = Number(req.params.id);
-    const breeds = db.breeds;
-    const cat = db.cats.find(el => el.id === catId);
-    res.render('edit', { cat, breeds });
+//OK
+app.get('/cats/:id/edit', async(req, res) => {
+    const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
+    
+    const breeds = await Breed.find().lean();
+    //TO DO: find a way to show the breeed of the cat on top of the options as selected
+    res.render('edit', { cat , breeds});
 });
 
 app.post('/cats/:id/edit', async (req, res) => {
