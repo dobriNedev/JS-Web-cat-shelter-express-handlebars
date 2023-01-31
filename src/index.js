@@ -28,10 +28,9 @@ app.get('/', async (req, res) => {
         console.error(`Error at GET / : ${error}`);
     }
 });
-
+//OK
 app.get('/cats/addCat', async (req, res) => {
     const breeds = await Breed.find().lean();
-    console.log(breeds)
     
     res.render('addCat', { breeds });
 });
