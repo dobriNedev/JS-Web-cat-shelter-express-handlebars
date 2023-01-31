@@ -3,7 +3,7 @@ const handlebars = require('express-handlebars');
 const formidable = require('formidable');
 const fs = require('fs');
 const path = require('path');
-const config = require('./config/config.js'); 
+const config = require('./config/config.js');
 const initDB = require('./config/initDB');
 
 const db = require('./db.json');
@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.get('/', async (req, res) => {
     try {
         const cats = await MongoCat.find().populate('breed').lean();
-        
+
         res.render('index', { cats });
     } catch (error) {
         throw new Error(error);
@@ -40,31 +40,31 @@ app.get('/cats/addCat', async (req, res) => {
     }
 });
 //OK
-app.post('/cats/addCat',upload.single('upload'), async (req, res) => {
+app.post('/cats/addCat', upload.single('upload'), async (req, res) => {
     const breedName = req.body.breed;
-    
-    const breed = await Breed.findOne({breed: breedName});
-    
+
+    const breed = await Breed.findOne({ breed: breedName });
+
     if (!breed) {
-        return res.status(400).send({error:'invalid Breed!'});
+        return res.status(400).send({ error: 'invalid Breed!' });
     }
     const breedId = breed._id;
-   
+
     const imgUrl = '/images/cats/' + req.file.originalname;
-    
+
     const cat = new MongoCat({
         name: req.body.name,
         imageUrl: imgUrl,
         breed: breedId,
         description: req.body.description
-      });
+    });
 
     try {
         await cat.save();
         res.redirect('/');
     } catch (error) {
         throw new Error(error);
-    }  
+    }
 });
 //OK
 app.get('/cats/addBreed', (req, res) => {
@@ -73,7 +73,7 @@ app.get('/cats/addBreed', (req, res) => {
 //OK
 app.post('/cats/addBreed', async (req, res) => {
     const { breed } = req.query;
-    
+
     try {
         await Breed.create({ breed });
     } catch (error) {
@@ -83,12 +83,16 @@ app.post('/cats/addBreed', async (req, res) => {
     res.redirect('/');
 });
 //OK
-app.get('/cats/:id/edit', async(req, res) => {
-    const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
-    
-    const breeds = await Breed.find().lean();
-    //TO DO: find a way to show the breeed of the cat on top of the options as selected
-    res.render('edit', { cat , breeds});
+app.get('/cats/:id/edit', async (req, res) => {
+    try {
+        const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
+
+        const breeds = await Breed.find().lean();
+        //TO DO: find a way to show the breeed of the cat on top of the options as selected
+        res.render('edit', { cat, breeds });
+    } catch (error) {
+        throw new Error(error);
+    }
 });
 
 app.post('/cats/:id/edit', async (req, res) => {
@@ -105,9 +109,9 @@ app.post('/cats/:id/edit', async (req, res) => {
         }
 
         const { name, breed, description } = fields;
-       
+
         await editCat(catId, name, breed, description);
-        
+
         res.redirect('/');
     });
 });
@@ -138,7 +142,7 @@ app.get('/cats/:id/shelterCat', (req, res) => {
     res.render('shelterCat', { cat });
 });
 
-app.post('/cats/:id/shelterCat', async(req, res) => {
+app.post('/cats/:id/shelterCat', async (req, res) => {
     const catId = Number(req.params.id);
     try {
         const data = await fs.promises.readFile(path.resolve(__dirname, './db.json'));
@@ -157,5 +161,5 @@ app.post('/cats/:id/shelterCat', async(req, res) => {
 });
 
 initDB()
-    .then(() => app.listen(config.PORT, () => {console.log(`Server is running on PORT: ${config.PORT}...`)}))
+    .then(() => app.listen(config.PORT, () => { console.log(`Server is running on PORT: ${config.PORT}...`) }))
     .catch((err) => console.log(err));
