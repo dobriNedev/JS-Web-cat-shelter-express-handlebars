@@ -1,17 +1,13 @@
 const express = require('express');
 const handlebars = require('express-handlebars');
-const formidable = require('formidable');
 const fs = require('fs');
 const path = require('path');
 const config = require('./config/config.js');
 const initDB = require('./config/initDB');
 
-
 const Breed = require('./models/Breed.js');
-const Cat = require('./models/Cat');
-const upload = require('./upload');
 const MongoCat = require('./models/MongoCat');
-const { db } = require('./models/Breed.js');
+const upload = require('./upload');
 
 const app = express();
 
@@ -126,7 +122,6 @@ app.post('/cats/:id/edit', upload.single('image'), async (req, res) => {
         throw new Error(error);
     }
 });
-
 //OK
 app.get('/cats/:id/shelterCat', async(req, res) => {
     try {
@@ -135,7 +130,6 @@ app.get('/cats/:id/shelterCat', async(req, res) => {
     } catch (error) {
         throw new Error(error)
     }
-    
 });
 //OK
 app.post('/cats/:id/shelterCat', async (req, res) => {
@@ -165,6 +159,19 @@ app.post('/cats/:id/shelterCat', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).send({ error: 'Error finding cat' });
+    }
+});
+
+app.get('/search', async(req, res) => {
+    const query = req.query.search;
+    
+    try {
+        //find all cats maching the regex, options -> i stands for case-insensitive
+        const cats = await MongoCat.find({name: {$regex: new RegExp(query), $options: 'i'}}).populate('breed').lean();
+        console.log(cats);
+        res.render('index', { cats });
+    } catch (error) {
+        throw new Error(error);
     }
 });
 
