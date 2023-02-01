@@ -95,47 +95,38 @@ app.get('/cats/:id/edit', async (req, res) => {
         throw new Error(error);
     }
 });
+//OK
+app.post('/cats/:id/edit', upload.single('image'), async (req, res) => {
+    const breedName = req.body.breed;
+    
+    try {
+        const breed = await Breed.findOne({breed: breedName});
+        
+        const breedId = breed._id;
 
-app.post('/cats/:id/edit', async (req, res) => {
-    const catId = Number(req.params.id);
-    let form = new formidable.IncomingForm();
-    form.parse(req, async (err, fields, files) => {
-        if (err) {
-            return console.log(`Error by parsing form when editing cat: ${err}`);
+        try {
+            const cat = await MongoCat.findById(req.params.id);
+            console.log(cat)
+            const updateData = {
+                name: req.body.name,
+                breed: breedId,
+                description: req.body.description
+            }
+            //Check if a new image was uploaded
+            if (req.file) {
+                updateData.imageUrl = `/images/cats/${req.file.originalname}`;
+            }
+            const updatedCat = await MongoCat.updateOne({_id: cat._id},{$set: updateData})
+            
+            res.redirect('/');
+        } catch (error) {
+            throw new Error(error);
         }
-
-        let cat = db.cats.find(el => el.id === catId);
-        if (!cat) {
-            res.status(404).send('There is no cat with the given ID found!');
-        }
-
-        const { name, breed, description } = fields;
-
-        await editCat(catId, name, breed, description);
-
-        res.redirect('/');
-    });
+    } catch (error) {
+        throw new Error(error);
+    }
 });
 
-async function editCat(id, name, breed, description) {
-    try {
-        const data = await fs.promises.readFile(path.resolve(__dirname, './db.json'));
-        let db = JSON.parse(data);
-
-        let cat = db.cats.find(el => el.id === id);
-
-        cat.name = name;
-        cat.breed = breed;
-        cat.description = description;
-
-        const jsonData = JSON.stringify(db, null, 2);
-        await fs.promises.writeFile(path.resolve(__dirname, './db.json'), jsonData);
-        console.log('Data written to file trough editCat()');
-        return db;
-    } catch (error) {
-        console.error(`Error at editCat(): ${error}`);
-    }
-}
 //OK
 app.get('/cats/:id/shelterCat', async(req, res) => {
     try {
@@ -146,7 +137,7 @@ app.get('/cats/:id/shelterCat', async(req, res) => {
     }
     
 });
-
+//OK
 app.post('/cats/:id/shelterCat', async (req, res) => {
     try {
         const cat  = await MongoCat.findById(req.params.id).populate('breed').lean();
