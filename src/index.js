@@ -6,11 +6,12 @@ const path = require('path');
 const config = require('./config/config.js');
 const initDB = require('./config/initDB');
 
-const db = require('./db.json');
+
 const Breed = require('./models/Breed.js');
 const Cat = require('./models/Cat');
 const upload = require('./upload');
 const MongoCat = require('./models/MongoCat');
+const { db } = require('./models/Breed.js');
 
 const app = express();
 
@@ -147,20 +148,32 @@ app.get('/cats/:id/shelterCat', async(req, res) => {
 });
 
 app.post('/cats/:id/shelterCat', async (req, res) => {
-    const catId = Number(req.params.id);
     try {
-        const data = await fs.promises.readFile(path.resolve(__dirname, './db.json'));
-        const db = JSON.parse(data);
-        //db.cats.filter(el => el.id !== catId); needs to be assigned to variable/constant
-        let cat = db.cats.find(el => el.id === catId);
-        let index = db.cats.indexOf(cat);
-        db.cats.splice(index, 1);
-        const jsonData = JSON.stringify(db, null, 2);
-        await fs.promises.writeFile(path.resolve(__dirname, './db.json'), jsonData);
-        console.log(`Data written to file when deleting resource`);
-        res.redirect('/');
+        const cat  = await MongoCat.findById(req.params.id).populate('breed').lean();
+        const catsWithSameImg = await MongoCat.find({imageUrl: cat.imageUrl}).lean();
+       if (catsWithSameImg.length === 1) {
+            const filePath = path.join(__dirname,'public', cat.imageUrl);
+            try {
+                if (fs.existsSync(filePath)) {
+                    await fs.promises.unlink(filePath);
+                } else {
+                    throw new Error(`File ${filePath} not found!`);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+       } 
+    
+       try {
+            await MongoCat.deleteOne({_id: cat._id});
+            res.redirect('/');
+       } catch (error) {
+            console.error(error);
+            res.status(500).send({ error: 'Error deleting cat from database' });
+       }
     } catch (error) {
-        console.error(`Error at deleteCat(): ${error}`);
+        console.error(error);
+        res.status(500).send({ error: 'Error finding cat' });
     }
 });
 
