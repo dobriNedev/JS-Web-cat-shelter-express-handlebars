@@ -161,12 +161,12 @@ app.post('/cats/:id/shelterCat', async (req, res) => {
         res.status(500).send({ error: 'Error finding cat' });
     }
 });
-
+//OK
 app.get('/search', async(req, res) => {
     const query = req.query.search;
     
     try {
-        //find all cats maching the regex, options -> i stands for case-insensitive
+        //find all cats maching the regex, options -> i stands for case-aginsensitive
         const cats = await MongoCat.find({name: {$regex: new RegExp(query), $options: 'i'}}).populate('breed').lean();
         console.log(cats);
         res.render('index', { cats });
