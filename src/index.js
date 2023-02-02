@@ -5,11 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const config = require('./config/config.js');
 const initDB = require('./config/initDB');
-
-
 const upload = require('./upload');
-
-
 const app = express();
 viewEngineSetup(app);
 
@@ -17,42 +13,6 @@ app.use(express.static('src/public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(routes);
 
-//OK
-app.get('/cats/addCat', async (req, res) => {
-    try {
-        const breeds = await Breed.find().lean();
-        res.render('addCat', { breeds });
-    } catch (error) {
-        throw new Error(error);
-    }
-});
-//OK
-app.post('/cats/addCat', upload.single('upload'), async (req, res) => {
-    const breedName = req.body.breed;
-
-    const breed = await Breed.findOne({ breed: breedName });
-
-    if (!breed) {
-        return res.status(400).send({ error: 'invalid Breed!' });
-    }
-    const breedId = breed._id;
-
-    const imgUrl = '/images/cats/' + req.file.originalname;
-
-    const cat = new MongoCat({
-        name: req.body.name,
-        imageUrl: imgUrl,
-        breed: breedId,
-        description: req.body.description
-    });
-
-    try {
-        await cat.save();
-        res.redirect('/');
-    } catch (error) {
-        throw new Error(error);
-    }
-});
 //OK
 app.get('/cats/:id/edit', async (req, res) => {
     try {
