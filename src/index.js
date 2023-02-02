@@ -1,5 +1,5 @@
 const express = require('express');
-const handlebars = require('express-handlebars');
+const viewEngineSetup = require('./config/viewEngine');
 const fs = require('fs');
 const path = require('path');
 const config = require('./config/config.js');
@@ -10,11 +10,11 @@ const upload = require('./upload');
 const MongoCat = require('./models/MongoCat');
 
 const app = express();
+viewEngineSetup(app);
 
-app.engine('hbs', handlebars.engine({ extname: 'hbs' }));
 app.use(express.static('src/public'));
-app.set('view engine', 'hbs');
-app.set('views', './src/views');
+
+
 
 app.use(express.urlencoded({ extended: false }));
 //OK
