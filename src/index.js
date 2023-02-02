@@ -1,17 +1,13 @@
 const express = require('express');
 const handlebars = require('express-handlebars');
-const formidable = require('formidable');
 const fs = require('fs');
 const path = require('path');
 const config = require('./config/config.js');
 const initDB = require('./config/initDB');
 
-
 const Breed = require('./models/Breed.js');
-const Cat = require('./models/Cat');
 const upload = require('./upload');
 const MongoCat = require('./models/MongoCat');
-const { db } = require('./models/Breed.js');
 
 const app = express();
 
