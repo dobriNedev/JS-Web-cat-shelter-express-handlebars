@@ -12,6 +12,7 @@ router.get('/', homeController.getHomePage);
 
 //Breeds
 router.get('/cats/addBreed', breedController.getBreedAdd);
+router.post('/cats/addBreed', breedController.postBreedAdd);
 
 
 module.exports = router;

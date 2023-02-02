@@ -55,18 +55,6 @@ app.post('/cats/addCat', upload.single('upload'), async (req, res) => {
 });
 
 //OK
-app.post('/cats/addBreed', async (req, res) => {
-    const { breed } = req.query;
-
-    try {
-        await Breed.create({ breed });
-    } catch (error) {
-        console.log(error);
-    }
-
-    res.redirect('/');
-});
-//OK
 app.get('/cats/:id/edit', async (req, res) => {
     try {
         const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
