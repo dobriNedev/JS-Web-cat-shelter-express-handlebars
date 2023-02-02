@@ -14,6 +14,7 @@ router.get('/search', homeController.getSearch);
 router.get('/cats/addCat', catController.getAddCat);
 router.post('/cats/addCat', upload.single('upload'), catController.postAddCat);
 router.get('/cats/:id/edit', catController.getEdit);
+router.post('/cats/:id/edit', upload.single('image'), catController.postEdit);
 //Breeds
 router.get('/cats/addBreed', breedController.getBreedAdd);
 router.post('/cats/addBreed', breedController.postBreedAdd);

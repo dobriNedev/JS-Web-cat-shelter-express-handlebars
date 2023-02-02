@@ -48,3 +48,34 @@ exports.getEdit =  async (req, res) => {
         throw new Error(error);
     }
 };
+
+exports.postEdit = async (req, res) => {
+    const breedName = req.body.breed;
+    
+    try {
+        const breed = await Breed.findOne({breed: breedName});
+        
+        const breedId = breed._id;
+
+        try {
+            const cat = await MongoCat.findById(req.params.id);
+            
+            const updateData = {
+                name: req.body.name,
+                breed: breedId,
+                description: req.body.description
+            }
+            //Check if a new image was uploaded
+            if (req.file) {
+                updateData.imageUrl = `/images/cats/${req.file.originalname}`;
+            }
+            const updatedCat = await MongoCat.updateOne({_id: cat._id},{$set: updateData})
+            
+            res.redirect('/');
+        } catch (error) {
+            throw new Error(error);
+        }
+    } catch (error) {
+        throw new Error(error);
+    }
+};
