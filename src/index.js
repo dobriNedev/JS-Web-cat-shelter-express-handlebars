@@ -53,7 +53,6 @@ app.post('/cats/addCat', upload.single('upload'), async (req, res) => {
         throw new Error(error);
     }
 });
-
 //OK
 app.get('/cats/:id/edit', async (req, res) => {
     try {
@@ -136,6 +135,19 @@ app.post('/cats/:id/shelterCat', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).send({ error: 'Error finding cat' });
+    }
+});
+//OK
+app.get('/search', async(req, res) => {
+    const query = req.query.search;
+    
+    try {
+        //find all cats maching the regex, options -> i stands for case-aginsensitive
+        const cats = await MongoCat.find({name: {$regex: new RegExp(query), $options: 'i'}}).populate('breed').lean();
+        console.log(cats);
+        res.render('index', { cats });
+    } catch (error) {
+        throw new Error(error);
     }
 });
 
