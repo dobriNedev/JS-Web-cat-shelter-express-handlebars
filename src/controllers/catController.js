@@ -91,3 +91,33 @@ exports.getShelterCat = async(req, res) => {
     }
     
 };
+
+exports.postShelterCat = async (req, res) => {
+    try {
+        const cat  = await MongoCat.findById(req.params.id).populate('breed').lean();
+        const catsWithSameImg = await MongoCat.find({imageUrl: cat.imageUrl}).lean();
+       if (catsWithSameImg.length === 1) {
+            const filePath = path.join(__dirname,'public', cat.imageUrl);
+            try {
+                if (fs.existsSync(filePath)) {
+                    await fs.promises.unlink(filePath);
+                } else {
+                    throw new Error(`File ${filePath} not found!`);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+       } 
+    
+       try {
+            await MongoCat.deleteOne({_id: cat._id});
+            res.redirect('/');
+       } catch (error) {
+            console.error(error);
+            res.status(500).send({ error: 'Error deleting cat from database' });
+       }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'Error finding cat' });
+    }
+};
