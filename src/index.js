@@ -1,5 +1,6 @@
 const express = require('express');
 const viewEngineSetup = require('./config/viewEngine');
+const routes = require('./routes')
 const fs = require('fs');
 const path = require('path');
 const config = require('./config/config.js');
@@ -7,26 +8,15 @@ const initDB = require('./config/initDB');
 
 const Breed = require('./models/Breed.js');
 const upload = require('./upload');
-const MongoCat = require('./models/MongoCat');
+
 
 const app = express();
 viewEngineSetup(app);
 
 app.use(express.static('src/public'));
-
-
-
 app.use(express.urlencoded({ extended: false }));
-//OK
-app.get('/', async (req, res) => {
-    try {
-        const cats = await MongoCat.find().populate('breed').lean();
+app.use(routes);
 
-        res.render('index', { cats });
-    } catch (error) {
-        throw new Error(error);
-    }
-});
 //OK
 app.get('/cats/addCat', async (req, res) => {
     try {
