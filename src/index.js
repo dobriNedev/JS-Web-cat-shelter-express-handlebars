@@ -6,7 +6,7 @@ const path = require('path');
 const config = require('./config/config.js');
 const initDB = require('./config/initDB');
 
-const Breed = require('./models/Breed.js');
+
 const upload = require('./upload');
 
 
@@ -53,10 +53,7 @@ app.post('/cats/addCat', upload.single('upload'), async (req, res) => {
         throw new Error(error);
     }
 });
-//OK
-app.get('/cats/addBreed', (req, res) => {
-    res.render('addBreed');
-});
+
 //OK
 app.post('/cats/addBreed', async (req, res) => {
     const { breed } = req.query;

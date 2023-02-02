@@ -3,9 +3,15 @@ const Router = express.Router;
 const router = Router();
 //TO DO: import controllers
 const homeController = require('./controllers/homeController');
+const breedController = require('./controllers/breedController');
 
 //TO DO: implement endpoints and actions
+//Home
 router.get('/', homeController.getHomePage);
+//Cats
+
+//Breeds
+router.get('/cats/addBreed', breedController.getBreedAdd);
 
 
 module.exports = router;
