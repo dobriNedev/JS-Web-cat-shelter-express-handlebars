@@ -8,6 +8,7 @@ const breedController = require('./controllers/breedController');
 //TO DO: implement endpoints and actions
 //Home
 router.get('/', homeController.getHomePage);
+router.get('/search', homeController.getSearch);
 //Cats
 
 //Breeds
