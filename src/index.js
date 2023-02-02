@@ -14,18 +14,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(routes);
 
 //OK
-app.get('/cats/:id/edit', async (req, res) => {
-    try {
-        const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
-
-        const breeds = await Breed.find().lean();
-        //TO DO: find a way to show the breeed of the cat on top of the options as selected
-        res.render('edit', { cat, breeds });
-    } catch (error) {
-        throw new Error(error);
-    }
-});
-//OK
 app.post('/cats/:id/edit', upload.single('image'), async (req, res) => {
     const breedName = req.body.breed;
     

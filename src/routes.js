@@ -13,6 +13,7 @@ router.get('/search', homeController.getSearch);
 //Cats
 router.get('/cats/addCat', catController.getAddCat);
 router.post('/cats/addCat', upload.single('upload'), catController.postAddCat);
+router.get('/cats/:id/edit', catController.getEdit);
 //Breeds
 router.get('/cats/addBreed', breedController.getBreedAdd);
 router.post('/cats/addBreed', breedController.postBreedAdd);

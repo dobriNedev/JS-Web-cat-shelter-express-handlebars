@@ -36,3 +36,15 @@ exports.postAddCat = async (req, res) => {
         throw new Error(error);
     }
 };
+
+exports.getEdit =  async (req, res) => {
+    try {
+        const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
+
+        const breeds = await Breed.find().lean();
+        //TO DO: find a way to show the breeed of the cat as selected in options
+        res.render('edit', { cat, breeds });
+    } catch (error) {
+        throw new Error(error);
+    }
+};
