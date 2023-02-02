@@ -14,16 +14,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(routes);
 
 //OK
-app.get('/cats/:id/shelterCat', async(req, res) => {
-    try {
-        const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
-        res.render('shelterCat', { cat });
-    } catch (error) {
-        throw new Error(error)
-    }
-    
-});
-//OK
 app.post('/cats/:id/shelterCat', async (req, res) => {
     try {
         const cat  = await MongoCat.findById(req.params.id).populate('breed').lean();

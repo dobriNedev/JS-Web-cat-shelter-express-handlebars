@@ -1,5 +1,7 @@
 const MongoCat = require('../models/MongoCat');
 const Breed = require('../models/Breed');
+const fs = require('fs');
+const path = require('path');
 
 exports.getAddCat = async (req, res) => {
     try {
@@ -78,4 +80,14 @@ exports.postEdit = async (req, res) => {
     } catch (error) {
         throw new Error(error);
     }
+};
+
+exports.getShelterCat = async(req, res) => {
+    try {
+        const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
+        res.render('shelterCat', { cat });
+    } catch (error) {
+        throw new Error(error)
+    }
+    
 };
