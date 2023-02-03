@@ -4,3 +4,6 @@ exports.getLogin = async(req, res) => {
     res.render('login');
 };
 
+exports.getRegister = async(req, res) => {
+    res.render('register');
+};
