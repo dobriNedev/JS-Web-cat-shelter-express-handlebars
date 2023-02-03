@@ -16,6 +16,7 @@ router.get('/search', homeController.getSearch);
 router.get('/auth/login', authController.getLogin);
 //Register
 router.get('/auth/register', authController.getRegister);
+router.post('/auth/register', authController.postRegister);
 //Logout
 
 //Cats
