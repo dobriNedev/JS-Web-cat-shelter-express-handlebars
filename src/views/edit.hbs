@@ -10,9 +10,16 @@
         <input type="file" id="image" name="image">
         <label for="group">Breed</label>
         <select id="group" name="breed">
+            {{#if selected}}
+            <option value="{{selected}}" selected>{{selected}}</option>
             {{#each breeds}}
             {{>breed }}
             {{/each}}
+            {{else}}
+            {{#each breeds}}
+            {{>breed }}
+            {{/each}}
+            {{/if}}
         </select>
         <button>Edit Cat</button>
     </form>

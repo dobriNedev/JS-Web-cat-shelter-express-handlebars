@@ -42,9 +42,12 @@ exports.postAddCat = async (req, res) => {
 exports.getEdit =  async (req, res) => {
     try {
         const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
-        const breeds = await Breed.find().lean();
         //TO DO: find a way to show the breeed of the cat as selected in options
-        res.render('edit', { cat, breeds });
+        //1.find the breed of the cat
+        const selected = cat.breed.breed;
+        //2.find all breeds except the selected one
+        const breeds = await Breed.find({_id: {$ne: cat.breed._id}}).lean();
+        res.render('edit', { cat, breeds, selected });
     } catch (error) {
         throw new Error(error);
     }
