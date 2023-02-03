@@ -12,9 +12,12 @@ const authController = require('./controllers/authController');
 router.get('/', homeController.getHomePage);
 router.get('/search', homeController.getSearch);
 //Auth
+//Login
 router.get('/auth/login', authController.getLogin);
-
+//Register
 router.get('/auth/register', authController.getRegister);
+//Logout
+
 //Cats
 //Add
 router.get('/cats/addCat', catController.getAddCat);
