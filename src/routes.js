@@ -6,10 +6,15 @@ const upload = require('./upload');
 const homeController = require('./controllers/homeController');
 const breedController = require('./controllers/breedController');
 const catController = require('./controllers/catController');
+const authController = require('./controllers/authController');
 //Endpoints and actions
 //Home and search
 router.get('/', homeController.getHomePage);
 router.get('/search', homeController.getSearch);
+//Auth
+router.get('/auth/login', authController.getLogin);
+
+
 //Cats
 //Add
 router.get('/cats/addCat', catController.getAddCat);
