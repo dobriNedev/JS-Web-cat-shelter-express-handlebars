@@ -14,7 +14,7 @@ router.get('/search', homeController.getSearch);
 //Auth
 router.get('/auth/login', authController.getLogin);
 
-
+router.get('/auth/register', authController.getRegister);
 //Cats
 //Add
 router.get('/cats/addCat', catController.getAddCat);
