@@ -6,7 +6,10 @@ exports.getLogin = async(req, res) => {
 
 exports.postLogin = async(req, res) => {
     const { username, password} = req.body;
-
+    console.log(username)
+    console.log(password)
+    await authManager.login(username, password);
+    res.redirect('/');
 };
 
 exports.getRegister = async(req, res) => {

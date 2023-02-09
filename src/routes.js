@@ -14,6 +14,7 @@ router.get('/search', homeController.getSearch);
 //Auth
 //Login
 router.get('/auth/login', authController.getLogin);
+router.post('/auth/login', authController.postLogin);
 //Register
 router.get('/auth/register', authController.getRegister);
 router.post('/auth/register', authController.postRegister);

@@ -8,3 +8,10 @@ exports.register = async(firstName, lastName, username, email, password) => {
     console.log(hash)
     return await User.create({ firstName, lastName, username, email, password: hash });
 };
+
+exports.login = async(username, password) => {
+    console.log(this)
+    //const user = this.getUserByUsername(username);
+
+    //console.log(user);
+};
