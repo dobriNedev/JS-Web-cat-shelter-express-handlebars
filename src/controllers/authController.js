@@ -8,8 +8,15 @@ exports.postLogin = async(req, res) => {
     const { username, password} = req.body;
     console.log(username)
     console.log(password)
-    await authManager.login(username, password);
-    res.redirect('/');
+    const isValidPass = await authManager.login(username, password);
+    if (isValidPass) {
+        console.log('isValidPass')
+        console.log(isValidPass)
+        res.redirect('/');
+    } else {
+        console.log('Invalid Password!');
+        res.render('login')
+    }
 };
 
 exports.getRegister = async(req, res) => {

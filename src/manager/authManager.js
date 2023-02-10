@@ -10,8 +10,10 @@ exports.register = async(firstName, lastName, username, email, password) => {
 };
 
 exports.login = async(username, password) => {
-    console.log(this)
-    //const user = this.getUserByUsername(username);
-
-    //console.log(user);
+    //console.log(this)
+    const user = await this.getUserByUsername(username);
+    if (!user) {
+        return new Error('Invalid user!');
+    }
+    return await bcrypt.compare(password, user.password);
 };
