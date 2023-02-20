@@ -7,7 +7,8 @@ const config = {
         //mongodb://localhost:27017/catShelter->desired collection name in MongoDB
         DB_URI: 'mongodb://localhost:27017/catShelter',
         //good practice is secret to be hashed
-        SECRET: 'MyCatAppVerySecrettySecret'
+        SECRET: 'MyCatAppVerySecrettySecret',
+        COOKIE_TOKEN_NAME: 'authToken'
 
     }
 }
