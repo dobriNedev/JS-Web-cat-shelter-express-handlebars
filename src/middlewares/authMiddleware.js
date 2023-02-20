@@ -2,11 +2,11 @@ const config = require('../config/config');
 const jwt = require('../utils/jwtUtil');
 
 exports.authenticate = async(req,res,next) => {
-    const token = req.cookie[config.COOKIE_TOKEN_NAME];
+    const token = req.cookies[config.COOKIE_TOKEN_NAME];
 
     if(token) {
         try {
-            const decodedToken = await jwt.verify(token, config.SECRET);
+            const decodedToken = await jwt.verify(token,config.SECRET);
             req.user = decodedToken;
             res.locals.isAuth = true;
             res.lokals.user = decodedToken;
