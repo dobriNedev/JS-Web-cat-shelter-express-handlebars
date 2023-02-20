@@ -1,21 +1,21 @@
 const authManager = require('../manager/authManager');
 const test = require('../testRequest');
+const getError = require('../utils/errorUtil');
+const config = require('../config/config');
+
 exports.getLogin = async(req, res) => {
     res.render('login');
 };
 
 exports.postLogin = async(req, res) => {
     const { username, password} = req.body;
-    console.log(username)
-    console.log(password)
-    const isValidPass = await authManager.login(username, password);
-    if (isValidPass) {
-        console.log('isValidPass')
-        console.log(isValidPass)
+    
+    try {
+        const token = await authManager.login(username, password);
+        res.cookie(config.COOKIE_TOKEN_NAME, token);
         res.redirect('/');
-    } else {
-        console.log('Invalid Password!');
-        res.render('login')
+    } catch (error) {
+        res.status(401).render('login', { error: getError(error) } );
     }
 };
 
@@ -25,17 +25,11 @@ exports.getRegister = async(req, res) => {
 
 exports.postRegister = async(req, res) => {
     const { firstName, lastName, username, email , password, repeatPassword } = req.body;
-    //TO DO: think of validator function to validate the data in each field
-    if (password !== repeatPassword) {
-        res.status(404).send('<h2>Invalid username or password!</h2>').end();
+
+    try {
+        await authManager.register(firstName, lastName, username, email , password, repeatPassword);
+        res.redirect('/auth/login');
+    } catch (error) {
+        res.status(400).render('register', { error: getError(error) } );
     }
-    const existingUser = await authManager.getUserByUsername(username);
-
-    if (existingUser) {
-        res.status(404).send('<h2>Invalid username or password!</h2>').end();
-    }
-
-    const user = await authManager.register(firstName, lastName, username, email , password);
-
-    res.redirect('login');
 };
