@@ -2,6 +2,7 @@ const express = require('express');
 const Router = express.Router;
 const router = Router();
 const upload = require('./upload');
+const { isAuthenticated } = require('./middlewares/authMiddleware');
 //Controllers
 const homeController = require('./controllers/homeController');
 const breedController = require('./controllers/breedController');
@@ -25,11 +26,11 @@ router.post('/auth/register', authController.postRegister);
 router.get('/cats/addCat', catController.getAddCat);
 router.post('/cats/addCat', upload.single('upload'), catController.postAddCat);
 //Edit
-router.get('/cats/:id/edit', catController.getEdit);
-router.post('/cats/:id/edit', upload.single('image'), catController.postEdit);
-//Delete aka Shelter
-router.get('/cats/:id/shelterCat', catController.getShelterCat);
-router.post('/cats/:id/shelterCat', catController.postShelterCat);
+router.get('/cats/:id/edit', isAuthenticated, catController.getEdit);
+router.post('/cats/:id/edit', isAuthenticated,  upload.single('image'), catController.postEdit);
+//Delete (aka Shelter)
+router.get('/cats/:id/shelterCat', isAuthenticated, catController.getShelterCat);
+router.post('/cats/:id/shelterCat', isAuthenticated, catController.postShelterCat);
 //Breeds
 router.get('/cats/addBreed', breedController.getBreedAdd);
 router.post('/cats/addBreed', breedController.postBreedAdd);

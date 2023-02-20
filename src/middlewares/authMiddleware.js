@@ -12,7 +12,7 @@ exports.authenticate = async(req,res,next) => {
             res.lokals.user = decodedToken;
         } catch (error) {
             res.clearCookie(config.COOKIE_TOKEN_NAME);
-            res.status(401).redirect('/users/login');
+            res.status(401).redirect('/auth/login');
         }
        
     }
@@ -22,7 +22,7 @@ exports.authenticate = async(req,res,next) => {
 
 exports.isAuthenticated = async(req, res, next) => {
     if (!req.user) {
-        res.status(401).redirect('/users/login')
+        res.status(401).redirect('/auth/login')
     }
     next();
 };
