@@ -13,13 +13,6 @@
 
 <body>
 
-    {{#if error}}
-    <div>
-        <div class="errorContainer">
-            <p>{{error}}</p>
-        </div>
-    </div>
-    {{/if}}
     <header>
         <nav>
             <ul class="navigation">
@@ -31,14 +24,21 @@
                 <li><a href="/auth/logout">Logout</a></li>
             </ul>
         </nav>
-        <h1>Cat Shelter</h1>
+        {{#if error}}
+    <div>
+        <div class="errorContainer">
+            <p>{{error}}</p>
+        </div>
+    </div>
+    {{else}}
+    <h1>Cat Shelter</h1>
         <form action="/search">
             <input type="text" name="search">
             <button type="submit">Search</button>
         </form>
+    {{/if}}
 
     </header>
-
 
     {{{body}}}
 
