@@ -12,6 +12,14 @@
 </head>
 
 <body>
+
+       {{#if error}}
+    <div>
+        <div class="errorContainer">
+            <p>{{error}}</p>
+        </div>
+    </div>
+    {{/if}}
     <header>
         <nav>
             <ul class="navigation">
@@ -28,7 +36,9 @@
             <input type="text" name="search">
             <button type="submit">Search</button>
         </form>
+
     </header>
+    
 
    {{{body}}}
 

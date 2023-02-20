@@ -12,6 +12,11 @@ exports.register = async(firstName, lastName, username, email, password, repeatP
     if (password !== repeatPassword) {
         throw new Error('Password Missmatch!')
     }
+
+    if (password < 3) {
+        throw new Error('Password too short!');
+    }
+
     let existingUser = await this.getUserByUsername(username);
 
     if (existingUser) {
@@ -45,7 +50,7 @@ exports.login = async(username, password) => {
     const payload = {
         _id: user._id,
         email: user.email,
-        fullName: user.firstName + user.lastName, 
+        fullName: user.firstName + ' ' + user.lastName, 
         username
     }
 

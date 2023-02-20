@@ -1,9 +1,13 @@
 <main>
     <section class="cats">
         <ul>
+            {{#if cats}}
             {{#each cats}}
             {{>cat}}
             {{/each}}
+            {{else}}
+            <p>Nothing to display yet!</p>
+            {{/if}}
         </ul>
     </section>
 </main>
