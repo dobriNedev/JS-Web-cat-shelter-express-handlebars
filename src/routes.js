@@ -20,7 +20,7 @@ router.post('/auth/login', authController.postLogin);
 router.get('/auth/register', authController.getRegister);
 router.post('/auth/register', authController.postRegister);
 //Logout
-
+router.get('/auth/logout', isAuthenticated, authController.getLogout);
 //Cats
 //Add
 router.get('/cats/addCat', catController.getAddCat);

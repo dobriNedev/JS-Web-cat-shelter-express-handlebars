@@ -33,3 +33,5 @@ exports.postRegister = async(req, res) => {
         res.status(400).render('register', { error: getError(error) } );
     }
 };
+
+exports.getLogout = (req, res) => authManager.logout(req, res);

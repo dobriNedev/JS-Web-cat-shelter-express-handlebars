@@ -59,3 +59,7 @@ exports.login = async(username, password) => {
     return token;
 };
 
+exports.logout = (req, res) => {
+    res.clearCookie(config.COOKIE_TOKEN_NAME);
+    res.redirect('/');
+};
