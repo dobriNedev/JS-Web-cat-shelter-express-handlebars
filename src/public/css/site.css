@@ -248,4 +248,12 @@ body > form > label:nth-child(3) {
     animation: blink-animation 5s linear infinite;
   }
 
+  .cat-form a {
+    text-decoration: none;
+    color:  lightskyblue;;
+  }
+
+  .cat-form a:hover {
+    color: rgb(39, 82, 151)
+  }
   

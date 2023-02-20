@@ -25,7 +25,8 @@ exports.authenticate = async(req,res,next) => {
 
 exports.isAuthenticated = async(req, res, next) => {
     if (!req.user) {
-        res.status(401).redirect('/auth/login')
+        const error = new Error('Only for authenticated users! Please log in!')
+        return res.status(401).render('login', { error: getError(error) });
     }
     next();
 };

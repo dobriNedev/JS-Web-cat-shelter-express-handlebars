@@ -23,8 +23,8 @@ router.post('/auth/register', authController.postRegister);
 router.get('/auth/logout', isAuthenticated, authController.getLogout);
 //Cats
 //Add
-router.get('/cats/addCat', catController.getAddCat);
-router.post('/cats/addCat', upload.single('upload'), catController.postAddCat);
+router.get('/cats/addCat',isAuthenticated, catController.getAddCat);
+router.post('/cats/addCat',isAuthenticated, upload.single('upload'), catController.postAddCat);
 //Edit
 router.get('/cats/:id/edit', isAuthenticated, catController.getEdit);
 router.post('/cats/:id/edit', isAuthenticated,  upload.single('image'), catController.postEdit);
@@ -32,7 +32,7 @@ router.post('/cats/:id/edit', isAuthenticated,  upload.single('image'), catContr
 router.get('/cats/:id/shelterCat', isAuthenticated, catController.getShelterCat);
 router.post('/cats/:id/shelterCat', isAuthenticated, catController.postShelterCat);
 //Breeds
-router.get('/cats/addBreed', breedController.getBreedAdd);
-router.post('/cats/addBreed', breedController.postBreedAdd);
+router.get('/cats/addBreed',isAuthenticated, breedController.getBreedAdd);
+router.post('/cats/addBreed',isAuthenticated, breedController.postBreedAdd);
 
 module.exports = router;
