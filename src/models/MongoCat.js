@@ -1,28 +1,37 @@
 const mongoose = require('mongoose');
-const Breed = require('./Breed');
 
 const catSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: [true, 'Name is required!']
     },
     imageUrl: {
         type: String,
-        required: true,
-        //TO DO check if validation required
-        //match: [/^https?:\/\//g, 'Invalid URL!']
+        required: [true, 'Image is required!']
     },
     breed: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Breed',
-        required: true
+        required: [true, 'Breed is required!']
     },
     description: {
         type: String,
-        required: true,
-        minLength: 5,
-        maxLength: 200
-    }
+        required: [true, 'Description is required!'],
+        minLength: [5, 'Description too short!'],
+        maxLength: [200, 'Description too long!']
+    },
+    commentsList: [
+        {likerID: {
+            type: mongoose.Types.ObjectId,
+            ref: 'User'
+        },
+        comments:[{
+            type: String,
+            minLength: [2, 'Comment is too short!'],
+            minLength: [40, 'Comment is too long!'],
+        }]
+        }
+    ]
 });
 
 const MongoCat = mongoose.model('Cat', catSchema);
