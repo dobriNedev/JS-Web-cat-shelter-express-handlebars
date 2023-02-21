@@ -3,12 +3,16 @@ const Breed = require('../models/Breed');
 const fs = require('fs');
 const path = require('path');
 
+const breedManager = require('../manager/breedManager');
+const catManager = require('../manager/catManager');
+const getError = require('../utils/errorUtil');
+
 exports.getAddCat = async (req, res) => {
     try {
-        const breeds = await Breed.find().lean();
+        const breeds = await breedManager.getAll().lean();
         res.render('addCat', { breeds });
     } catch (error) {
-        throw new Error(error);
+        res.status(404).render('addCat', { error: getError(error) });
     }
 };
 

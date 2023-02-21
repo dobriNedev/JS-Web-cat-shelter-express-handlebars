@@ -1,5 +1,5 @@
-const Breed = require('../models/Breed');
-
+const {getError} = require('../utils/errorUtil');
+const breedManager = require('../manager/breedManager');
 
 exports.getBreedAdd = (req, res) => {
     res.render('addBreed');
@@ -7,12 +7,11 @@ exports.getBreedAdd = (req, res) => {
 
 exports.postBreedAdd = async (req, res) => {
     const breed = req.body.breed;
-    console.log(breed)
+    
     try {
-        await Breed.create({ breed });
+        await breedManager.create(breed);
+        res.redirect('/');
     } catch (error) {
-        console.log(error);
+        res.status(404).render('addBreed', {error: getError(error)});
     }
-
-    res.redirect('/');
 }
