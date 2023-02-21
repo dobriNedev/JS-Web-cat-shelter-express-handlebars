@@ -7,3 +7,5 @@ const path = require('path');
 exports.getOneById = (catId) => Cat.findById(catId);
  
 exports.add = (name, imgUrl, description, breedId, userId) => Cat.create({name, imageUrl: imgUrl, description, breed:breedId, owner: userId})
+
+exports.edit = (catId, name, breed, description, imageUrl) => Cat.findByIdAndUpdate(catId, { name, breed, description, imageUrl });

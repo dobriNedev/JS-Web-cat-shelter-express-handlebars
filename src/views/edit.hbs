@@ -7,7 +7,7 @@
         <textarea
             id="description" name="description">{{cat.description}}</textarea>
         <label for="image">Image</label>
-        <input type="file" id="image" name="image">
+        <input type="file" id="image" name="image" value="{{cat.imageUrl}}">
         <label for="group">Breed</label>
         <select id="group" name="breed">
             {{#if selected}}

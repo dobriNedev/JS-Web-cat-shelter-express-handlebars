@@ -4,9 +4,10 @@ const fs = require('fs');
 const path = require('path');
 
 const breedManager = require('../manager/breedManager');
-const authManager  = require('../manager/authManager');
+const authManager = require('../manager/authManager');
 const catManager = require('../manager/catManager');
 const { getError } = require('../utils/errorUtil');
+
 
 exports.getAddCat = async (req, res) => {
     try {
@@ -37,7 +38,8 @@ exports.postAddCat = async (req, res) => {
     }
 };
 
-exports.getEdit =  async (req, res) => {
+exports.getEdit = async (req, res) => {
+    const catId = req.params.id;
 
     try {
         const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
@@ -45,7 +47,7 @@ exports.getEdit =  async (req, res) => {
         //1.find the breed of the cat
         const selected = cat.breed.breed;
         //2.find all breeds except the selected one
-        const breeds = await Breed.find({_id: {$ne: cat.breed._id}}).lean();
+        const breeds = await Breed.find({ _id: { $ne: cat.breed._id } }).lean();
         res.render('edit', { cat, breeds, selected });
     } catch (error) {
         res.status(404).render('edit', { error: getError(error) });
@@ -53,37 +55,40 @@ exports.getEdit =  async (req, res) => {
 };
 
 exports.postEdit = async (req, res) => {
-    const breedName = req.body.breed;
+    const catId = req.params.id;
+    const {name, breed, description } = req.body;
     
-    try {
-        const breed = await Breed.findOne({breed: breedName});
-        
-        const breedId = breed._id;
+    let imageUrl;
+    //Check if a new image was uploaded
+    if (req.file) {
+        imageUrl = `/images/cats/${req.file.originalname}`;
+    }
 
-        try {
-            const cat = await MongoCat.findById(req.params.id);
-            
-            const updateData = {
-                name: req.body.name,
-                breed: breedId,
-                description: req.body.description
-            }
-            //Check if a new image was uploaded
-            if (req.file) {
-                updateData.imageUrl = `/images/cats/${req.file.originalname}`;
-            }
-            const updatedCat = await MongoCat.updateOne({_id: cat._id},{$set: updateData})
-            
-            res.redirect('/');
-        } catch (error) {
-            throw new Error(error);
-        }
+    try {
+        const breedDB = await breedManager.getOne(breed);
+
+        const breedId = breedDB._id;
+
+        // const cat = await MongoCat.findById(req.params.id);
+
+        // const updateData = {
+        //     name: req.body.name,
+        //     breed: breedId,
+        //     description: req.body.description
+        // }
+        
+       // const updatedCat = await MongoCat.updateOne({ _id: cat._id }, { $set: updateData })
+
+        await catManager.edit(catId, name, breedId, description, imageUrl )
+
+        res.redirect('/');
+
     } catch (error) {
         res.status(404).render('edit', { error: getError(error) });
     }
 };
 
-exports.getShelterCat = async(req, res) => {
+exports.getShelterCat = async (req, res) => {
     const catId = req.params.id;
     try {
         const cat = await catManager.getOneById(catId).populate('breed').lean();
@@ -95,10 +100,10 @@ exports.getShelterCat = async(req, res) => {
 
 exports.postShelterCat = async (req, res) => {
     try {
-        const cat  = await MongoCat.findById(req.params.id).populate('breed').lean();
-        const catsWithSameImg = await MongoCat.find({imageUrl: cat.imageUrl}).lean();
-       if (catsWithSameImg.length === 1) {
-            const filePath = path.join(__dirname,'public', cat.imageUrl);
+        const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
+        const catsWithSameImg = await MongoCat.find({ imageUrl: cat.imageUrl }).lean();
+        if (catsWithSameImg.length === 1) {
+            const filePath = path.join(__dirname, 'public', cat.imageUrl);
             try {
                 if (fs.existsSync(filePath)) {
                     await fs.promises.unlink(filePath);
@@ -108,15 +113,15 @@ exports.postShelterCat = async (req, res) => {
             } catch (error) {
                 console.error(error);
             }
-       } 
-    
-       try {
-            await MongoCat.deleteOne({_id: cat._id});
+        }
+
+        try {
+            await MongoCat.deleteOne({ _id: cat._id });
             res.redirect('/');
-       } catch (error) {
+        } catch (error) {
             console.error(error);
             res.status(500).send({ error: 'Error deleting cat from database' });
-       }
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send({ error: 'Error finding cat' });
