@@ -1,5 +1,4 @@
 const authManager = require('../manager/authManager');
-const test = require('../testRequest');
 const { getError} = require('../utils/errorUtil');
 const config = require('../config/config');
 

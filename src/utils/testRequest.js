@@ -1,3 +1,5 @@
+//util for easy testing of req object data
+
 exports.testReq = (req) => {
     const reqK = Object.keys(req);
     console.log(`reqK:${ reqK }`)
