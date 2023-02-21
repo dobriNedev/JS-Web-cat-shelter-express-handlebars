@@ -7,6 +7,10 @@ exports.getUserByUsername = (username) => User.findOne({ username });
 
 exports.getUserByEmail = (email) => User.findOne({email});
 
+exports.addToMyOfferedCats = (userId, catId) => User.findByIdAndUpdate(userId, {$push: {myOfferedCats: catId}});
+
+exports.addToMyShelteredCats = (userId, catId) => User.findByIdAndUpdate(userId, {$push: {myShelteredCats: catId}});
+
 exports.register = async(firstName, lastName, username, email, password, repeatPassword) => {
     
     if (password !== repeatPassword) {
