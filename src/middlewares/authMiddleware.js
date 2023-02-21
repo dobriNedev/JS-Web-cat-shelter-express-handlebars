@@ -8,8 +8,6 @@ exports.authenticate = async(req,res,next) => {
     if(token) {
         try {
             const decodedToken = await jwt.verify(token, config.SECRET);
-            console.log('decodedToken AT AUTHENTICATE:')
-            console.log(decodedToken)
             req.user = decodedToken;
             res.locals.isAuth = true;
             res.locals.user = decodedToken;

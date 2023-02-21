@@ -4,8 +4,9 @@ const fs = require('fs');
 const path = require('path');
 
 const breedManager = require('../manager/breedManager');
+const authManager  = require('../manager/authManager');
 const catManager = require('../manager/catManager');
-const getError = require('../utils/errorUtil');
+const { getError } = require('../utils/errorUtil');
 
 exports.getAddCat = async (req, res) => {
     try {
@@ -18,32 +19,26 @@ exports.getAddCat = async (req, res) => {
 
 exports.postAddCat = async (req, res) => {
     const breedName = req.body.breed;
-
-    const breed = await Breed.findOne({ breed: breedName });
-
-    if (!breed) {
-        return res.status(400).send({ error: 'invalid Breed!' });
-    }
-    const breedId = breed._id;
-
-    const imgUrl = '/images/cats/' + req.file.originalname;
-
-    const cat = new MongoCat({
-        name: req.body.name,
-        imageUrl: imgUrl,
-        breed: breedId,
-        description: req.body.description
-    });
-
+    const userId = res.locals.user._id;
     try {
-        await cat.save();
+        const breed = await breedManager.getOne(breedName);
+        if (!breed) {
+            throw new Error('Invalid breed!');
+        }
+        const breedId = breed._id;
+        const { name, description } = req.body;
+        const imgUrl = '/images/cats/' + req.file.originalname;
+        const cat = await catManager.add(name, imgUrl, description, breedId, userId);
+        await authManager.addToMyOfferedCats(userId, cat._id);
+
         res.redirect('/');
     } catch (error) {
-        throw new Error(error);
+        res.status(404).render('addCat', { error: getError(error) });
     }
 };
 
 exports.getEdit =  async (req, res) => {
+
     try {
         const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
         //TO DO: find a way to show the breeed of the cat as selected in options
@@ -53,7 +48,7 @@ exports.getEdit =  async (req, res) => {
         const breeds = await Breed.find({_id: {$ne: cat.breed._id}}).lean();
         res.render('edit', { cat, breeds, selected });
     } catch (error) {
-        throw new Error(error);
+        res.status(404).render('edit', { error: getError(error) });
     }
 };
 
@@ -84,16 +79,17 @@ exports.postEdit = async (req, res) => {
             throw new Error(error);
         }
     } catch (error) {
-        throw new Error(error);
+        res.status(404).render('edit', { error: getError(error) });
     }
 };
 
 exports.getShelterCat = async(req, res) => {
+    const catId = req.params.id;
     try {
-        const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
+        const cat = await catManager.getOneById(catId).populate('breed').lean();
         res.render('shelterCat', { cat });
     } catch (error) {
-        throw new Error(error)
+        res.status(404).render('shelterCat', { error: getError(error) });
     }
 };
 
