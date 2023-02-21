@@ -1,12 +1,13 @@
-const MongoCat = require('../models/MongoCat');
+const catManager = require('../manager/catManager');
+const { getError } = require('../utils/errorUtil');
 
 exports.getHomePage = async (req, res) => {
     try {
-        const cats = await MongoCat.find().populate('breed').lean();
+        const cats = await catManager.getAllNotShelterd().populate('breed').lean();
 
         res.render('index', { cats });
     } catch (error) {
-        throw new Error(error);
+        res.status(404).render('index', { error: getError(error) });
     }
 };
 
@@ -14,14 +15,11 @@ exports.getSearch = async(req, res) => {
     const query = req.query.search;
 
     try {
-        //find all cats maching the regex, options -> i stands for case-aginsensitive
-        const cats = await MongoCat.find({name: {$regex: new RegExp(query), $options: 'i'}})
-        .populate('breed')
-        .lean();
+        const cats = await catManager.search(query).populate('breed').lean();
         
         res.render('index', { cats });
     } catch (error) {
-        throw new Error(error);
+        res.status(404).render('index', { error: getError(error) });
     }
 };
 
