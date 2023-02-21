@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const breedShema = new mongoose.Schema({
     breed: {
         type: String,
-        required: true,
-        minLength: 3,
-        maxLength: 25
+        required: [true, 'Breed is required!'],
+        minLength: [3, 'Breed is too short!'], 
+        maxLength: [25, 'Breed is too long!']
     }
 });
 
