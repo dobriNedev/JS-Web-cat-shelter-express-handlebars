@@ -25,6 +25,11 @@ const catSchema = new mongoose.Schema({
         ref: 'User',
         required: [true, 'Owner is required!']
     },
+    sheltered: {
+        type: Boolean,
+        default: false,
+        enum: ['true, false']
+    },
     commentsList: [
         {userID: {
             type: mongoose.Types.ObjectId,

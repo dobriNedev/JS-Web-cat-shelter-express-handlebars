@@ -39,8 +39,6 @@ exports.postAddCat = async (req, res) => {
 };
 
 exports.getEdit = async (req, res) => {
-    const catId = req.params.id;
-
     try {
         const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
         //TO DO: find a way to show the breeed of the cat as selected in options
@@ -56,8 +54,8 @@ exports.getEdit = async (req, res) => {
 
 exports.postEdit = async (req, res) => {
     const catId = req.params.id;
-    const {name, breed, description } = req.body;
-    
+    const { name, breed, description } = req.body;
+
     let imageUrl;
     //Check if a new image was uploaded
     if (req.file) {
@@ -69,17 +67,7 @@ exports.postEdit = async (req, res) => {
 
         const breedId = breedDB._id;
 
-        // const cat = await MongoCat.findById(req.params.id);
-
-        // const updateData = {
-        //     name: req.body.name,
-        //     breed: breedId,
-        //     description: req.body.description
-        // }
-        
-       // const updatedCat = await MongoCat.updateOne({ _id: cat._id }, { $set: updateData })
-
-        await catManager.edit(catId, name, breedId, description, imageUrl )
+        await catManager.edit(catId, name, breedId, description, imageUrl)
 
         res.redirect('/');
 
@@ -99,31 +87,30 @@ exports.getShelterCat = async (req, res) => {
 };
 
 exports.postShelterCat = async (req, res) => {
+    const catId = req.params.id;
+    const userId = res.locals.user._id;
     try {
-        const cat = await MongoCat.findById(req.params.id).populate('breed').lean();
-        const catsWithSameImg = await MongoCat.find({ imageUrl: cat.imageUrl }).lean();
-        if (catsWithSameImg.length === 1) {
-            const filePath = path.join(__dirname, 'public', cat.imageUrl);
-            try {
-                if (fs.existsSync(filePath)) {
-                    await fs.promises.unlink(filePath);
-                } else {
-                    throw new Error(`File ${filePath} not found!`);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        }
+        await catManager.shelterCat(catId);
 
-        try {
-            await MongoCat.deleteOne({ _id: cat._id });
-            res.redirect('/');
-        } catch (error) {
-            console.error(error);
-            res.status(500).send({ error: 'Error deleting cat from database' });
-        }
+        await authManager.addToMyShelteredCats(userId, catId);
+        // //This functionality is supposed to delete the image of the cat if only one cat has that image
+        // //TO DO: NEEDS BUG FIX 
+        // //checking if more than one cat has the same image
+        // const catsWithSameImg = await catManager.getAllByImageUrl(cat.imageUrl);
+        // console.log(catsWithSameImg)
+        // //if only one cat has that image delete the image
+        // if (catsWithSameImg.length === 1) {
+        //     const filePath = path.join(__dirname, 'public', cat.imageUrl);
+        //     console.log(fs.existsSync(filePath))
+        //     if (fs.existsSync(filePath)) {
+        //         await fs.promises.unlink(filePath);
+        //     } else {
+        //         throw new Error(`File ${filePath} not found!`);
+        //     }
+        // }
+
+        res.redirect('/');
     } catch (error) {
-        console.error(error);
-        res.status(500).send({ error: 'Error finding cat' });
+        res.status(404).render('shelterCat', { error: getError(error) });
     }
 };
