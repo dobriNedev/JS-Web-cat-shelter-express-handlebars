@@ -18,3 +18,9 @@ exports.shelterCat = (catId) => Cat.findByIdAndUpdate(catId, { sheltered: true }
 
 //finds all cats maching the regex, options -> i stands for case-insensitive
 exports.search = (query) => Cat.find({name: {$regex: new RegExp(query), $options: 'i'}, sheltered: false});
+
+exports.checkIfUserIsOwner = async(catId, userId) => {
+    const cat = await this.getOneById(catId).populate('owner');
+    const ownerId = cat.owner._id;
+    return ownerId == userId;
+};
