@@ -5,7 +5,8 @@ const breedShema = new mongoose.Schema({
         type: String,
         required: [true, 'Breed is required!'],
         minLength: [3, 'Breed is too short!'], 
-        maxLength: [25, 'Breed is too long!']
+        maxLength: [25, 'Breed is too long!'],
+        unique: true
     }
 });
 
