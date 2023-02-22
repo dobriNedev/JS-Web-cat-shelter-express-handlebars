@@ -1,7 +1,5 @@
 const MongoCat = require('../models/MongoCat');
 const Breed = require('../models/Breed');
-const fs = require('fs');
-const path = require('path');
 
 const breedManager = require('../manager/breedManager');
 const authManager = require('../manager/authManager');
@@ -93,21 +91,6 @@ exports.postShelterCat = async (req, res) => {
         await catManager.shelterCat(catId);
 
         await authManager.addToMyShelteredCats(userId, catId);
-        // //This functionality is supposed to delete the image of the cat if only one cat has that image
-        // //TO DO: NEEDS BUG FIX 
-        // //checking if more than one cat has the same image
-        // const catsWithSameImg = await catManager.getAllByImageUrl(cat.imageUrl);
-        // console.log(catsWithSameImg)
-        // //if only one cat has that image delete the image
-        // if (catsWithSameImg.length === 1) {
-        //     const filePath = path.join(__dirname, 'public', cat.imageUrl);
-        //     console.log(fs.existsSync(filePath))
-        //     if (fs.existsSync(filePath)) {
-        //         await fs.promises.unlink(filePath);
-        //     } else {
-        //         throw new Error(`File ${filePath} not found!`);
-        //     }
-        // }
 
         res.redirect('/');
     } catch (error) {
