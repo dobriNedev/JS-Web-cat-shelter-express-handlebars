@@ -1,0 +1,43 @@
+<main>
+    <section class="cats">
+        <div class="user-info">
+            <br><h2>{{user.firstName}} {{user.lastName}}'s info</h2><br>
+            <h3>Username: {{user.username}}</h3><br>
+            <h3>Email: {{user.email}}</h3><br>
+        </div>
+        <br>
+        {{#if isCats}}
+            {{#if isOfferedCats}}
+            <br><h2>I have helped to {{offeredCount}} cats find new home. Here they are:</h2><br>
+            <ul>
+            {{#each offeredCats}}
+            <li>
+                <img src="{{this.imageUrl}}" alt="pet img">
+                <h3>{{this.name}}</h3>
+            </li>
+            {{/each}}
+            </ul>
+            {{else}}
+            <br><h2>You haven't offered any cats yet… Start <a href="/cats/addCat">here</a></h2><br>
+            {{/if}}
+
+            {{#if isShelteredCats}}
+            <br><h2>I gave new home to {{shelterdCount}} cats:</h3><br>
+            <ul>
+            {{#each shelteredCats}}
+            <li>
+                <img src="{{this.imageUrl}}" alt="pet img">
+                <h3>{{this.name}}</h3>
+            </li>
+            {{/each}}
+            </ul>
+            {{else}}
+            <br><h2>You haven't shelterd any cats yet… Find a cat to love <a href="/">here</a></h2><br>
+            {{/if}}
+        {{else}}
+        <br><h2>You haven't offered or sheltered any cats yet… Do you have a cat that needs a <a href="/cats/addCat">new
+        home</a>? Do you need a <a href="/">cat</a> in your home?</h2><br>
+        {{/if}}
+    
+    </section>
+</main>
