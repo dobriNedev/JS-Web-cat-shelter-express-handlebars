@@ -6,10 +6,10 @@ const config = require('../config/config');
 exports.getUserByUsername = (username) => User.findOne({ username });
 
 exports.getUserByEmail = (email) => User.findOne({email});
-
-exports.addToMyOfferedCats = (userId, catId) => User.findByIdAndUpdate(userId, {$push: {myOfferedCats: catId}});
-
-exports.addToMyShelteredCats = (userId, catId) => User.findByIdAndUpdate(userId, {$push: {myShelteredCats: catId}});
+//$addToSet: -> pushes the catId in the array only if it doesn't exist in the array
+exports.addToMyOfferedCats = (userId, catId) => User.findByIdAndUpdate(userId, {$addToSet: {myOfferedCats: catId}});
+//$addToSet: -> pushes the catId in the array only if it doesn't exist in the array
+exports.addToMyShelteredCats = (userId, catId) => User.findByIdAndUpdate(userId, {$addToSet: {myShelteredCats: catId}});
 
 exports.register = async(firstName, lastName, username, email, password, repeatPassword) => {
     
