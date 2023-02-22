@@ -6,11 +6,14 @@ function getFirstMongooseError(error) {
 }
 
 exports.getError = (error) => {
+
     switch (error.name) {
         case 'Error':
             return error.message;
         case 'ValidationError':
             return getFirstMongooseError(error);
+        case 'MongoServerError':
+            return 'Already exists';
         default:
             return error.message;
     }
